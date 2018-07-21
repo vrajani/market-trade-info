@@ -1,4 +1,4 @@
-package pl.vrajani.request;
+package pl.vrajani.services;
 
 import pl.zankowski.iextrading4j.api.marketdata.LastTrade;
 import pl.zankowski.iextrading4j.api.stocks.KeyStats;
@@ -10,10 +10,10 @@ import pl.zankowski.iextrading4j.client.rest.request.stocks.TimeSeriesRequestBui
 
 import java.util.List;
 
-public class RequestData {
+public class RequestDataService {
 
     private IEXTradingClient client;
-    public RequestData(IEXTradingClient iexTradingClient){
+    public RequestDataService(IEXTradingClient iexTradingClient){
         this.client = iexTradingClient;
     }
 

@@ -1,4 +1,4 @@
-package pl.vrajani.notifications;
+package pl.vrajani.services;
 
 import pl.vrajani.models.StatsOfInterest;
 
