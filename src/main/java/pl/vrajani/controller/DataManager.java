@@ -19,15 +19,26 @@ public class DataManager {
     }
 
     public void manage(List<String> symbols) {
-        List<StatsOfInterest> suggestedBuys = new ArrayList<StatsOfInterest>();
-        List<StatsOfInterest> suggestedSells = new ArrayList<StatsOfInterest>();
+        List<StatsOfInterest> suggestedBuys = new ArrayList<>();
+        List<StatsOfInterest> suggestedSells = new ArrayList<>();
         for ( String symbol: symbols) {
             StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.recentRequestSample(symbol));
             OptimizerService optimizerService = new OptimizerService();
             optimizerService.optimizeForBuying(statsOfInterest, suggestedBuys, suggestedSells);
 
-
+            printResults("BUYS: ", suggestedBuys);
+            printResults("SELLS: ", suggestedSells);
         }
+    }
+
+    private void printResults(String message, List<StatsOfInterest> results) {
+        System.out.println("\n"+ message);
+        if( results.size() == 0){
+            System.out.println("None");
+        } else {
+            results.stream().forEach(result -> System.out.print(result.getCompanyName()));
+        }
+        System.out.println("\n");
     }
 }
