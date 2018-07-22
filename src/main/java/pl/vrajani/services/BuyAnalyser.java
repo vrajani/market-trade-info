@@ -1,8 +1,6 @@
 package pl.vrajani.services;
 
 import pl.vrajani.models.StatsOfInterest;
-
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class BuyAnalyser extends StatsAnalyser {
@@ -20,7 +18,7 @@ public class BuyAnalyser extends StatsAnalyser {
     }
 
     @Override
-    protected boolean isCloseTo52WeekLow(StatsOfInterest statsOfInterest) {
+    protected boolean isCloseTo52WeekExtreme(StatsOfInterest statsOfInterest) {
         return ((statsOfInterest.getLastPrice().subtract(statsOfInterest.getWeek52low())).divide(statsOfInterest.getLastPrice(),2, RoundingMode.HALF_UP)).floatValue() <= 0.05;
     }
 
@@ -43,6 +41,6 @@ public class BuyAnalyser extends StatsAnalyser {
 
     @Override
     protected boolean isGoodDay5ChangePercent(StatsOfInterest statsOfInterest) {
-        return statsOfInterest.getDay5ChangePercent().floatValue() < 1;
+        return statsOfInterest.getDay5ChangePercent().floatValue() < 0.005;
     }
 }

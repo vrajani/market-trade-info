@@ -22,16 +22,19 @@ public class DataManager {
         List<StatsOfInterest> suggestedBuys = new ArrayList<>();
         List<StatsOfInterest> suggestedSells = new ArrayList<>();
         List<StatsOfInterest> suggestedHolds = new ArrayList<>();
+        List<StatsOfInterest> earningsComingUp = new ArrayList<>();
+
         for ( String symbol: symbols) {
             StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
-                    requestDataService.recentRequestSample(symbol));
+                    requestDataService.getLatestPrice(symbol));
             OptimizerService optimizerService = new OptimizerService();
-            optimizerService.optimizeForBuying(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds);
+            optimizerService.identifyStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds);
         }
 
         printResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
         printResults("SELLS: "+ suggestedSells.size(), suggestedSells);
         printResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
+        printResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
 
     }
 

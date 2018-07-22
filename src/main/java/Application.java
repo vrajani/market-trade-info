@@ -9,11 +9,12 @@ public class Application {
     private static final List<String> COMPANY_SYMBOLS = Arrays.asList("AAPL", "MSFT", "FB", "NFLX", "JNJ",
             "AMAT", "TWTR", "MILN", "OKTA", "JD", "IQ", "AMD", "BAC", "INTC", "SBUX", "GRPN", "HMNY", "CRON", "DBX",
             "F", "GAMR", "KMI", "PFE", "MU", "SQ", "VMW", "ATVI", "UA", "BABA", "AMZN", "GOOG", "GOOGL", "TSLA",
-            "AMC");
+            "AMC", "T", "IFN", "TTM");
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
         Configuration configuration = new Configuration();
         DataManager manager = new DataManager(configuration.getIexTradingClient());
         manager.manage(COMPANY_SYMBOLS);
-
+        System.out.println("Completed in: "+ (System.currentTimeMillis() - startTime)/1000);
     }
 }

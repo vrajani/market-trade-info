@@ -8,8 +8,8 @@ public abstract class StatsAnalyser {
         boolean isGoodMonth1ChangePercent = isGoodMonth1ChangePercent(statsOfInterest);
         boolean isGoodMonth3ChangePercent = isGoodmonth3ChangePercent(statsOfInterest);
         boolean isGoodDay50MovingAvg = isGoodDay50MovingAvg(statsOfInterest);
-        boolean isCloseTo52WeekLow = isCloseTo52WeekLow(statsOfInterest);
-        return getAnalysisResults(isCloseTo52WeekLow, isGoodday5ChangePercent, isGoodMonth1ChangePercent,
+        boolean isCloseTo52WeekExtreme = isCloseTo52WeekExtreme(statsOfInterest);
+        return getAnalysisResults(isCloseTo52WeekExtreme, isGoodday5ChangePercent, isGoodMonth1ChangePercent,
                 isGoodMonth3ChangePercent, isGoodDay50MovingAvg);
     }
 
@@ -28,7 +28,7 @@ public abstract class StatsAnalyser {
         return null;
     }
 
-    protected abstract boolean isCloseTo52WeekLow(StatsOfInterest statsOfInterest);
+    protected abstract boolean isCloseTo52WeekExtreme(StatsOfInterest statsOfInterest);
     protected abstract boolean isGoodDay50MovingAvg(StatsOfInterest statsOfInterest);
     protected abstract boolean isGoodmonth3ChangePercent(StatsOfInterest statsOfInterest);
     protected abstract boolean isGoodMonth1ChangePercent(StatsOfInterest statsOfInterest);

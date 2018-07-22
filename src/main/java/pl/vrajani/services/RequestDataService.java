@@ -6,8 +6,10 @@ import pl.zankowski.iextrading4j.api.stocks.TimeSeries;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
 import pl.zankowski.iextrading4j.client.rest.request.marketdata.LastTradeRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.KeyStatsRequestBuilder;
+import pl.zankowski.iextrading4j.client.rest.request.stocks.PriceRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.TimeSeriesRequestBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class RequestDataService {
@@ -42,5 +44,13 @@ public class RequestDataService {
                 .build());
         System.out.println(lastTradeList);
         return lastTradeList;
+    }
+
+    public BigDecimal getLatestPrice (String symbol){
+        BigDecimal price = client.executeRequest(new PriceRequestBuilder()
+                .withSymbol(symbol)
+                .build());
+        System.out.println(symbol + ": Latest Price - "+price.toString());
+        return price;
     }
 }
