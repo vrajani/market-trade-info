@@ -1,3 +1,5 @@
+package pl.vrajani;
+
 import pl.vrajani.config.Configuration;
 import pl.vrajani.controller.DataManager;
 
@@ -11,6 +13,11 @@ public class Application {
             "F", "GAMR", "KMI", "PFE", "MU", "SQ", "VMW", "ATVI", "UA", "BABA", "AMZN", "GOOG", "GOOGL", "TSLA",
             "AMC", "T", "IFN", "TTM");
     public static void main(String[] args) {
+        Application application = new Application();
+        application.run();
+    }
+
+    public void run() {
         long startTime = System.currentTimeMillis();
         Configuration configuration = new Configuration();
         DataManager manager = new DataManager(configuration.getIexTradingClient());

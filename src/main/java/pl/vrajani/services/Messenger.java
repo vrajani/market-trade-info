@@ -5,6 +5,6 @@ import pl.vrajani.models.StatsOfInterest;
 public class Messenger {
 
     private static void sendMessage(StatsOfInterest statsOfInterest){
-        //TODO: add messenger
+        //TODO: add messenger to alert 
     }
 }

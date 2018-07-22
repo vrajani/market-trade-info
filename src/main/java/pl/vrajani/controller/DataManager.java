@@ -1,7 +1,6 @@
 package pl.vrajani.controller;
 
 import pl.vrajani.models.StatsOfInterest;
-import pl.vrajani.services.Messenger;
 import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
@@ -12,7 +11,6 @@ import java.util.List;
 public class DataManager {
 
     private RequestDataService requestDataService;
-    private Messenger messenger;
 
     public DataManager(IEXTradingClient iexTradingClient){
         this.requestDataService = new RequestDataService(iexTradingClient);
