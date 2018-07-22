@@ -18,9 +18,10 @@ public class StatsOfInterest {
     private final BigDecimal ytdChangePercent;
     private final BigDecimal month6ChangePercent;
     private final BigDecimal month3ChangePercent;
+    private final BigDecimal month1ChangePercent;
     private final BigDecimal day5ChangePercent;
     private final BigDecimal day30ChangePercent;
-    private final List<LastTrade> lastTrades;
+    private final BigDecimal lastPrice;
 
     public StatsOfInterest(KeyStats keyStats, List<LastTrade> lastTrades) {
         this.companyName = keyStats.getCompanyName();
@@ -36,7 +37,23 @@ public class StatsOfInterest {
         this.month3ChangePercent = keyStats.getMonth3ChangePercent();
         this.day5ChangePercent = keyStats.getDay5ChangePercent();
         this.day30ChangePercent = keyStats.getDay30ChangePercent();
-        this.lastTrades = lastTrades;
+        this.month1ChangePercent = keyStats.getMonth1ChangePercent();
+        this.lastPrice = findLastTrades(lastTrades);
+    }
+
+    private BigDecimal findLastTrades(List<LastTrade> lastTrades) {
+        if(lastTrades.size() == 1){
+            return lastTrades.get(0).getPrice();
+        } else {
+            BigDecimal latestPrice = BigDecimal.ZERO;
+            long largest = 0;
+            for(LastTrade lastTrade: lastTrades){
+                if(lastTrade.getTime() > largest){
+                    latestPrice = lastTrade.getPrice();
+                }
+            }
+            return latestPrice;
+        }
     }
 
     public String getCompanyName() {
@@ -91,7 +108,11 @@ public class StatsOfInterest {
         return this.day30ChangePercent;
     }
 
-    public List<LastTrade> getLastTrades() {
-        return lastTrades;
+    public BigDecimal getLastPrice() {
+        return lastPrice;
+    }
+
+    public BigDecimal getMonth1ChangePercent() {
+        return month1ChangePercent;
     }
 }

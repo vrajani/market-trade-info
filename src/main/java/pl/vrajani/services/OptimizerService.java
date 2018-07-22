@@ -5,7 +5,7 @@ import pl.vrajani.models.StatsOfInterest;
 import java.util.List;
 
 public class OptimizerService {
-    public void optimizeForBuying(StatsOfInterest statsOfInterest, List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells) {
+    public void optimizeForBuying(StatsOfInterest statsOfInterest, List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells, List<StatsOfInterest> suggestedHolds) {
         boolean isBuyCandidate = isBuyCandidate(statsOfInterest);
         boolean isSellCandidate = isSellCandidate(statsOfInterest);
 
@@ -14,7 +14,7 @@ public class OptimizerService {
         } else if (isSellCandidate){
             suggestedSells.add(statsOfInterest);
         } else if (!isBuyCandidate && !isSellCandidate){
-            System.out.println("HOLD ON!!!");
+            suggestedHolds.add(statsOfInterest);
         }
     }
 

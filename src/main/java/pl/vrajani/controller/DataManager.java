@@ -21,15 +21,18 @@ public class DataManager {
     public void manage(List<String> symbols) {
         List<StatsOfInterest> suggestedBuys = new ArrayList<>();
         List<StatsOfInterest> suggestedSells = new ArrayList<>();
+        List<StatsOfInterest> suggestedHolds = new ArrayList<>();
         for ( String symbol: symbols) {
             StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.recentRequestSample(symbol));
             OptimizerService optimizerService = new OptimizerService();
-            optimizerService.optimizeForBuying(statsOfInterest, suggestedBuys, suggestedSells);
-
-            printResults("BUYS: ", suggestedBuys);
-            printResults("SELLS: ", suggestedSells);
+            optimizerService.optimizeForBuying(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds);
         }
+
+        printResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
+        printResults("SELLS: "+ suggestedSells.size(), suggestedSells);
+        printResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
+
     }
 
     private void printResults(String message, List<StatsOfInterest> results) {
@@ -37,7 +40,7 @@ public class DataManager {
         if( results.size() == 0){
             System.out.println("None");
         } else {
-            results.stream().forEach(result -> System.out.print(result.getCompanyName()));
+            results.stream().forEach(result -> System.out.println(result.getCompanyName()));
         }
         System.out.println("\n");
     }
