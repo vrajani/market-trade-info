@@ -1,5 +1,6 @@
 package pl.vrajani.controller;
 
+import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
@@ -16,7 +17,7 @@ public class DataManager {
         this.requestDataService = new RequestDataService(iexTradingClient);
     }
 
-    public void manage(List<String> symbols) {
+    public Response manage(List<String> symbols) {
         List<StatsOfInterest> suggestedBuys = new ArrayList<>();
         List<StatsOfInterest> suggestedSells = new ArrayList<>();
         List<StatsOfInterest> suggestedHolds = new ArrayList<>();
@@ -34,6 +35,7 @@ public class DataManager {
         printResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
         printResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
 
+        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp);
     }
 
     private void printResults(String message, List<StatsOfInterest> results) {

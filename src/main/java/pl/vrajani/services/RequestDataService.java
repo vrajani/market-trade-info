@@ -24,7 +24,7 @@ public class RequestDataService {
         final KeyStats keyStats = client.executeRequest(new KeyStatsRequestBuilder()
                 .withSymbol(symbol)
                 .build());
-        System.out.println(keyStats);
+        //System.out.println(keyStats);
 
         return keyStats;
     }
@@ -33,7 +33,7 @@ public class RequestDataService {
         final List<TimeSeries> timeSeriesList = client.executeRequest(new TimeSeriesRequestBuilder()
                 .withSymbol("aapl")
                 .build());
-        System.out.println(timeSeriesList);
+        //System.out.println(timeSeriesList);
         return timeSeriesList;
     }
 
@@ -42,7 +42,7 @@ public class RequestDataService {
         final List<LastTrade> lastTradeList = client.executeRequest(new LastTradeRequestBuilder()
                 .withSymbol(symbol)
                 .build());
-        System.out.println(lastTradeList);
+        //System.out.println(lastTradeList);
         return lastTradeList;
     }
 

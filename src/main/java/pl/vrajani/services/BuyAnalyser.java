@@ -10,10 +10,10 @@ public class BuyAnalyser extends StatsAnalyser {
         boolean isLowThisWeek = isGoodMonth1ChangePercent && isGoodMonth3ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
 
-        System.out.println("week: "+ isLowThisWeek);
-        System.out.println("month: "+ isLowThisMonth);
-        System.out.println("52week: "+ isCloseTo52WeekLow);
-        System.out.println("50dayavg: "+ isGoodDay50MovingAvg);
+//        System.out.println("week: "+ isLowThisWeek);
+//        System.out.println("month: "+ isLowThisMonth);
+//        System.out.println("52week: "+ isCloseTo52WeekLow);
+//        System.out.println("50dayavg: "+ isGoodDay50MovingAvg);
         return isCloseTo52WeekLow || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg;
     }
 
