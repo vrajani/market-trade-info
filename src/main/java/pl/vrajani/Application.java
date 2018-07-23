@@ -9,10 +9,6 @@ import java.util.List;
 
 public class Application {
 
-    private static final List<String> COMPANY_SYMBOLS = Arrays.asList("AAPL", "MSFT", "FB", "NFLX", "JNJ",
-            "AMAT", "TWTR", "MILN", "OKTA", "JD", "IQ", "AMD", "BAC", "INTC", "SBUX", "GRPN", "HMNY", "CRON", "DBX",
-            "F", "GAMR", "KMI", "PFE", "MU", "SQ", "VMW", "ATVI", "UA", "BABA", "AMZN", "GOOG", "GOOGL", "TSLA",
-            "AMC", "T", "IFN", "TTM");
     public static void main(String[] args) {
         Application application = new Application();
         application.run();
@@ -22,7 +18,7 @@ public class Application {
         long startTime = System.currentTimeMillis();
         Configuration configuration = new Configuration();
         DataManager manager = new DataManager(configuration.getIexTradingClient());
-        Response response = manager.manage(COMPANY_SYMBOLS);
+        Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")));
         System.out.println("Completed in: "+ (System.currentTimeMillis() - startTime)/1000);
         return response;
     }
