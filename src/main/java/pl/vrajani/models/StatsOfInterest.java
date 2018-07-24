@@ -1,9 +1,7 @@
 package pl.vrajani.models;
 
-import pl.zankowski.iextrading4j.api.marketdata.LastTrade;
 import pl.zankowski.iextrading4j.api.stocks.KeyStats;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class StatsOfInterest {
 

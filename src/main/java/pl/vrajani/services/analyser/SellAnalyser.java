@@ -1,10 +1,11 @@
-package pl.vrajani.services;
+package pl.vrajani.services.analyser;
 
 import pl.vrajani.models.StatsOfInterest;
+import pl.vrajani.services.analyser.StatsAnalyser;
 
 import java.math.RoundingMode;
 
-public class SellAnalyser extends StatsAnalyser{
+public class SellAnalyser extends StatsAnalyser {
 
     @Override
     protected boolean getAnalysisResults(boolean isCloseTo52Weekhigh, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {

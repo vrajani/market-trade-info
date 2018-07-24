@@ -1,4 +1,4 @@
-package pl.vrajani.services;
+package pl.vrajani.services.analyser;
 
 import pl.vrajani.models.StatsOfInterest;
 import java.math.RoundingMode;

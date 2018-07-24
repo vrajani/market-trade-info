@@ -8,13 +8,16 @@ import pl.zankowski.iextrading4j.client.IEXTradingClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DataManager {
 
     private RequestDataService requestDataService;
+    private OptimizerService optimizerService;
 
     public DataManager(IEXTradingClient iexTradingClient){
         this.requestDataService = new RequestDataService(iexTradingClient);
+        this.optimizerService = new OptimizerService();
     }
 
     public Response manage(List<String> symbols) {
@@ -22,23 +25,39 @@ public class DataManager {
         List<StatsOfInterest> suggestedSells = new ArrayList<>();
         List<StatsOfInterest> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
+        Map<String, Float> bestDividendStocks;
 
-        for ( String symbol: symbols) {
-            StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
-                    requestDataService.getLatestPrice(symbol));
-            OptimizerService optimizerService = new OptimizerService();
-            optimizerService.identifyStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds);
-        }
+        List<StatsOfInterest> statsOfInterestList = new ArrayList<>();
+        symbols.parallelStream().forEach(symbol -> {
+            statsOfInterestList.add(new StatsOfInterest(requestDataService.getKeyStats(symbol),
+                    requestDataService.getLatestPrice(symbol)));
+        });
 
-        printResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
-        printResults("SELLS: "+ suggestedSells.size(), suggestedSells);
-        printResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
-        printResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
+        optimizerService.categorizeStocks(statsOfInterestList, suggestedBuys, suggestedSells, suggestedHolds);
+        bestDividendStocks = optimizerService.getDividendStocks(statsOfInterestList);
 
-        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp);
+        printListResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
+        printListResults("SELLS: "+ suggestedSells.size(), suggestedSells);
+        printListResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
+        printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
+        printMapResults("Dividend Stocks: "+ bestDividendStocks.size(), bestDividendStocks);
+
+        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocks);
     }
 
-    private void printResults(String message, List<StatsOfInterest> results) {
+    private static void printMapResults(String message, Map<String, Float> results) {
+        System.out.println("\n"+ message);
+        if( results.size() == 0){
+            System.out.println("None");
+        } else {
+            for(Map.Entry entry : results.entrySet()){
+                System.out.println(entry.toString());
+            }
+        }
+        System.out.println("\n");
+    }
+
+    private static void printListResults(String message, List<StatsOfInterest> results) {
         System.out.println("\n"+ message);
         if( results.size() == 0){
             System.out.println("None");

@@ -1,7 +1,9 @@
 package pl.vrajani.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Response {
 
@@ -9,13 +11,16 @@ public class Response {
     private List<String> suggestedSells = new ArrayList<>();
     private List<String> suggestedHolds = new ArrayList<>();
     private List<String> earningsComingUp = new ArrayList<>();
+    private Map<String, Float> bestDividendStocks = new HashMap<>();
 
-    public Response(List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells, List<StatsOfInterest> suggestedHolds, List<StatsOfInterest> earningsComingUp){
+    public Response(List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells, List<StatsOfInterest>
+            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
         extractName(suggestedBuys, this.suggestedBuys);
         extractName(suggestedSells, this.suggestedSells);
 
         extractName(suggestedHolds, this.suggestedHolds);
         extractName(earningsComingUp, this.earningsComingUp);
+        this.bestDividendStocks = bestDividendStocks;
     }
 
     private void extractName(List<StatsOfInterest> suggestedStats, List<String> suggestedNames) {
@@ -54,5 +59,13 @@ public class Response {
 
     public void setEarningsComingUp(List<String> earningsComingUp) {
         this.earningsComingUp = earningsComingUp;
+    }
+
+    public Map<String, Float> getBestDividendStocks() {
+        return bestDividendStocks;
+    }
+
+    public void setBestDividendStocks(Map<String, Float> bestDividendStocks) {
+        this.bestDividendStocks = bestDividendStocks;
     }
 }
