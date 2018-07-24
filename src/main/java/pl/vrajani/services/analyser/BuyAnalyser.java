@@ -1,20 +1,28 @@
 package pl.vrajani.services.analyser;
 
+import pl.vrajani.models.REASON;
 import pl.vrajani.models.StatsOfInterest;
+import pl.vrajani.models.StockResponse;
+
 import java.math.RoundingMode;
 
 public class BuyAnalyser extends StatsAnalyser {
 
     @Override
-    protected boolean getAnalysisResults(boolean isCloseTo52WeekLow, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
+    protected boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52WeekLow, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
         boolean isLowThisWeek = isGoodMonth1ChangePercent && isGoodMonth3ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
 
-//        System.out.println("week: "+ isLowThisWeek);
-//        System.out.println("month: "+ isLowThisMonth);
-//        System.out.println("52week: "+ isCloseTo52WeekLow);
-//        System.out.println("50dayavg: "+ isGoodDay50MovingAvg);
-        return isCloseTo52WeekLow || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg;
+        if( isCloseTo52WeekLow || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg){
+            stockResponse.setClassification(StockResponse.CLASSIFICATION.BUY);
+            stockResponse.setReason(identifyBuyReasoning(isCloseTo52WeekLow, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg));
+            return true;
+        }
+        return false;
+    }
+
+    private REASON identifyBuyReasoning(boolean isCloseTo52WeekLow, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
+        return REASON.WEEK_LOW;
     }
 
     @Override

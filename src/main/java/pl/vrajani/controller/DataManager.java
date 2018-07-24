@@ -2,6 +2,7 @@ package pl.vrajani.controller;
 
 import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
+import pl.vrajani.models.StockResponse;
 import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
@@ -9,6 +10,7 @@ import pl.zankowski.iextrading4j.client.IEXTradingClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DataManager {
 
@@ -21,23 +23,25 @@ public class DataManager {
     }
 
     public Response manage(List<String> symbols) {
-        List<StatsOfInterest> suggestedBuys = new ArrayList<>();
-        List<StatsOfInterest> suggestedSells = new ArrayList<>();
+        List<StockResponse> suggestedBuys = new ArrayList<>();
+        List<StockResponse> suggestedSells = new ArrayList<>();
         List<StatsOfInterest> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
         Map<String, Float> bestDividendStocks;
 
         List<StatsOfInterest> statsOfInterestList = new ArrayList<>();
-        symbols.parallelStream().forEach(symbol -> {
-            statsOfInterestList.add(new StatsOfInterest(requestDataService.getKeyStats(symbol),
+        symbols.parallelStream()
+                .filter(Objects::nonNull)
+                .forEach(symbol -> {
+                    statsOfInterestList.add(new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.getLatestPrice(symbol)));
         });
 
         optimizerService.categorizeStocks(statsOfInterestList, suggestedBuys, suggestedSells, suggestedHolds);
         bestDividendStocks = optimizerService.getDividendStocks(statsOfInterestList);
 
-        printListResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
-        printListResults("SELLS: "+ suggestedSells.size(), suggestedSells);
+        printStockResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
+        printStockResults("SELLS: "+ suggestedSells.size(), suggestedSells);
         printListResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
         printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
         printMapResults("Dividend Stocks: "+ bestDividendStocks.size(), bestDividendStocks);
@@ -62,7 +66,17 @@ public class DataManager {
         if( results.size() == 0){
             System.out.println("None");
         } else {
-            results.stream().forEach(result -> System.out.println(result.getCompanyName()));
+            results.parallelStream().filter(Objects::nonNull).forEach(result -> System.out.println(result.getCompanyName()));
+        }
+        System.out.println("\n");
+    }
+
+    private static void printStockResults(String message, List<StockResponse> results) {
+        System.out.println("\n"+ message);
+        if( results.size() == 0){
+            System.out.println("None");
+        } else {
+            results.parallelStream().filter(Objects::nonNull).forEach(result -> System.out.println(result.toString()));
         }
         System.out.println("\n");
     }

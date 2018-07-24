@@ -1,24 +1,25 @@
 package pl.vrajani.services.analyser;
 
+import pl.vrajani.models.REASON;
 import pl.vrajani.models.StatsOfInterest;
-import pl.vrajani.services.analyser.StatsAnalyser;
+import pl.vrajani.models.StockResponse;
 
 import java.math.RoundingMode;
 
 public class SellAnalyser extends StatsAnalyser {
 
     @Override
-    protected boolean getAnalysisResults(boolean isCloseTo52Weekhigh, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
+    protected boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52Weekhigh, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
         boolean isLowThisWeek = isGoodMonth1ChangePercent && isGoodMonth3ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonthAndWeek = !isGoodMonth3ChangePercent && isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
 
-//        System.out.println("week: "+ isLowThisWeek);
-//        System.out.println("month: "+ isLowThisMonth);
-//        System.out.println("52week: "+ isCloseTo52Weekhigh);
-//        System.out.println("50dayavg: "+ isGoodDay50MovingAvg);
-        return isCloseTo52Weekhigh || isLowThisMonthAndWeek || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg;
-
+        if(isCloseTo52Weekhigh || isLowThisMonthAndWeek || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg){
+            stockResponse.setClassification(StockResponse.CLASSIFICATION.SELL);
+            stockResponse.setReason(identifySellReason(isCloseTo52Weekhigh, isLowThisMonthAndWeek, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -47,4 +48,9 @@ public class SellAnalyser extends StatsAnalyser {
     protected boolean isGoodDay5ChangePercent(StatsOfInterest statsOfInterest) {
         return statsOfInterest.getDay5ChangePercent().floatValue() >= 0.05;
     }
+
+    private REASON identifySellReason(boolean isCloseTo52Weekhigh, boolean isLowThisMonthAndWeek, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg){
+        return REASON.WEEK_LOW;
+    }
+
 }

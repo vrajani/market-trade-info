@@ -1,19 +1,21 @@
 package pl.vrajani.services.analyser;
 
+import pl.vrajani.models.REASON;
 import pl.vrajani.models.StatsOfInterest;
+import pl.vrajani.models.StockResponse;
 
 public abstract class StatsAnalyser {
-    public boolean analyse(StatsOfInterest statsOfInterest) {
+    public boolean analyse(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
         boolean isGoodday5ChangePercent = isGoodDay5ChangePercent(statsOfInterest);
         boolean isGoodMonth1ChangePercent = isGoodMonth1ChangePercent(statsOfInterest);
         boolean isGoodMonth3ChangePercent = isGoodmonth3ChangePercent(statsOfInterest);
         boolean isGoodDay50MovingAvg = isGoodDay50MovingAvg(statsOfInterest);
         boolean isCloseTo52WeekExtreme = isCloseTo52WeekExtreme(statsOfInterest);
-        return getAnalysisResults(isCloseTo52WeekExtreme, isGoodday5ChangePercent, isGoodMonth1ChangePercent,
+        return getAnalysisResults(stockResponse, isCloseTo52WeekExtreme, isGoodday5ChangePercent, isGoodMonth1ChangePercent,
                 isGoodMonth3ChangePercent, isGoodDay50MovingAvg);
     }
 
-    protected abstract boolean getAnalysisResults(boolean isCloseTo52WeekLow, boolean isGoodday5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay200MovingAvg);
+    protected abstract boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52WeekLow, boolean isGoodday5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay200MovingAvg);
 
     private final static BuyAnalyser buyAnalyser = new BuyAnalyser();
     private final static SellAnalyser sellAnalyser = new SellAnalyser();

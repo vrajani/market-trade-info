@@ -7,41 +7,41 @@ import java.util.Map;
 
 public class Response {
 
-    private List<String> suggestedBuys = new ArrayList<>();
-    private List<String> suggestedSells = new ArrayList<>();
+    private List<StockResponse> suggestedBuys = new ArrayList<>();
+    private List<StockResponse> suggestedSells = new ArrayList<>();
     private List<String> suggestedHolds = new ArrayList<>();
     private List<String> earningsComingUp = new ArrayList<>();
     private Map<String, Float> bestDividendStocks = new HashMap<>();
 
-    public Response(List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells, List<StatsOfInterest>
-            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
-        extractName(suggestedBuys, this.suggestedBuys);
-        extractName(suggestedSells, this.suggestedSells);
+    public Response(){}
 
-        extractName(suggestedHolds, this.suggestedHolds);
-        extractName(earningsComingUp, this.earningsComingUp);
+    public Response(List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StatsOfInterest>
+            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
+        this.suggestedBuys = suggestedBuys;
+        this.suggestedSells = suggestedSells;
+
+        extractNameFromList(suggestedHolds, this.suggestedHolds);
+        extractNameFromList(earningsComingUp, this.earningsComingUp);
         this.bestDividendStocks = bestDividendStocks;
     }
 
-    private void extractName(List<StatsOfInterest> suggestedStats, List<String> suggestedNames) {
+    private void extractNameFromList(List<StatsOfInterest> suggestedStats, List<String> suggestedNames) {
         suggestedStats.parallelStream().forEach(statsOfInterest -> suggestedNames.add(statsOfInterest.getCompanyName()));
     }
 
-    public Response(){}
-
-    public List<String> getSuggestedBuys() {
+    public List<StockResponse> getSuggestedBuys() {
         return suggestedBuys;
     }
 
-    public void setSuggestedBuys(List<String> suggestedBuys) {
+    public void setSuggestedBuys(List<StockResponse> suggestedBuys) {
         this.suggestedBuys = suggestedBuys;
     }
 
-    public List<String> getSuggestedSells() {
+    public List<StockResponse> getSuggestedSells() {
         return suggestedSells;
     }
 
-    public void setSuggestedSells(List<String> suggestedSells) {
+    public void setSuggestedSells(List<StockResponse> suggestedSells) {
         this.suggestedSells = suggestedSells;
     }
 

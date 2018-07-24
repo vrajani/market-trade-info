@@ -1,6 +1,8 @@
 package pl.vrajani.services;
 
+import pl.vrajani.models.REASON;
 import pl.vrajani.models.StatsOfInterest;
+import pl.vrajani.models.StockResponse;
 import pl.vrajani.services.analyser.StatsAnalyser;
 
 import java.math.BigDecimal;
@@ -9,29 +11,31 @@ import java.util.List;
 import java.util.Map;
 
 public class OptimizerService {
-    public void categorizeStocks(List<StatsOfInterest> statsOfInterestList, List<StatsOfInterest> suggestedBuys, List<StatsOfInterest> suggestedSells, List<StatsOfInterest> suggestedHolds) {
+    public void categorizeStocks(List<StatsOfInterest> statsOfInterestList, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StatsOfInterest> suggestedHolds) {
         statsOfInterestList.parallelStream().forEach(statsOfInterest -> {
-            boolean isBuyCandidate = isBuyCandidate(statsOfInterest);
-            boolean isSellCandidate = isSellCandidate(statsOfInterest);
+            StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
+                    REASON.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
+            boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
+            boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
 
             if (isBuyCandidate){
-                suggestedBuys.add(statsOfInterest);
+                suggestedBuys.add(stockResponse);
             } else if (isSellCandidate){
-                suggestedSells.add(statsOfInterest);
-            } else if (!isBuyCandidate && !isSellCandidate){
+                suggestedSells.add(stockResponse);
+            } else {
                 suggestedHolds.add(statsOfInterest);
             }
         });
     }
 
-    private boolean isBuyCandidate(StatsOfInterest statsOfInterest) {
+    private boolean isBuyCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
         StatsAnalyser analyser = StatsAnalyser.getAnalyser("buy");
-        return analyser.analyse(statsOfInterest);
+        return analyser.analyse(statsOfInterest, stockResponse);
     }
 
-    private boolean isSellCandidate(StatsOfInterest statsOfInterest) {
+    private boolean isSellCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
         StatsAnalyser analyser = StatsAnalyser.getAnalyser("sell");
-        return analyser.analyse(statsOfInterest);
+        return analyser.analyse(statsOfInterest, stockResponse);
     }
 
     public Map<String, Float> getDividendStocks(List<StatsOfInterest> statsOfInterestList) {
