@@ -16,13 +16,16 @@ public class OptimizerService {
             StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
                     REASON.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
-            boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
-
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
-            } else if (isSellCandidate){
+            }
+
+            boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
+
+            if (isSellCandidate){
                 suggestedSells.add(stockResponse);
-            } else {
+            }
+            if( !isBuyCandidate && !isSellCandidate) {
                 suggestedHolds.add(statsOfInterest);
             }
         });
