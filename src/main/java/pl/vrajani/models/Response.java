@@ -9,18 +9,18 @@ public class Response {
 
     private List<StockResponse> suggestedBuys = new ArrayList<>();
     private List<StockResponse> suggestedSells = new ArrayList<>();
-    private List<String> suggestedHolds = new ArrayList<>();
+    private List<StockResponse> suggestedHolds = new ArrayList<>();
     private List<String> earningsComingUp = new ArrayList<>();
     private Map<String, Float> bestDividendStocks = new HashMap<>();
 
     public Response(){}
 
-    public Response(List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StatsOfInterest>
+    public Response(List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse>
             suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
         this.suggestedBuys = suggestedBuys;
         this.suggestedSells = suggestedSells;
 
-        extractNameFromList(suggestedHolds, this.suggestedHolds);
+        this.suggestedHolds = suggestedHolds;
         extractNameFromList(earningsComingUp, this.earningsComingUp);
         this.bestDividendStocks = bestDividendStocks;
     }
@@ -45,11 +45,11 @@ public class Response {
         this.suggestedSells = suggestedSells;
     }
 
-    public List<String> getSuggestedHolds() {
+    public List<StockResponse> getSuggestedHolds() {
         return suggestedHolds;
     }
 
-    public void setSuggestedHolds(List<String> suggestedHolds) {
+    public void setSuggestedHolds(List<StockResponse> suggestedHolds) {
         this.suggestedHolds = suggestedHolds;
     }
 

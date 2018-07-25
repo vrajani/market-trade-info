@@ -15,7 +15,7 @@ public class BuyAnalyser extends StatsAnalyser {
 
         if( isCloseTo52WeekLow || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg){
             stockResponse.setClassification(StockResponse.CLASSIFICATION.BUY);
-            stockResponse.setReason(identifyBuyReasoning(isCloseTo52WeekLow, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg));
+            stockResponse.setReason(identifyBuyReasoning(isCloseTo52WeekLow, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg).getReason());
             return true;
         }
         return false;

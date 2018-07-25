@@ -25,7 +25,7 @@ public class DataManager {
     public Response manage(List<String> symbols) {
         List<StockResponse> suggestedBuys = new ArrayList<>();
         List<StockResponse> suggestedSells = new ArrayList<>();
-        List<StatsOfInterest> suggestedHolds = new ArrayList<>();
+        List<StockResponse> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
         Map<String, Float> bestDividendStocks;
 
@@ -42,7 +42,7 @@ public class DataManager {
 
         printStockResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
         printStockResults("SELLS: "+ suggestedSells.size(), suggestedSells);
-        printListResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
+        printStockResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
         printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
         printMapResults("Dividend Stocks: "+ bestDividendStocks.size(), bestDividendStocks);
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OptimizerService {
-    public void categorizeStocks(List<StatsOfInterest> statsOfInterestList, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StatsOfInterest> suggestedHolds) {
+    public void categorizeStocks(List<StatsOfInterest> statsOfInterestList, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse> suggestedHolds) {
         statsOfInterestList.parallelStream().forEach(statsOfInterest -> {
             StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
                     REASON.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
@@ -26,7 +26,7 @@ public class OptimizerService {
                 suggestedSells.add(stockResponse);
             }
             if( !isBuyCandidate && !isSellCandidate) {
-                suggestedHolds.add(statsOfInterest);
+                suggestedHolds.add(stockResponse);
             }
         });
     }

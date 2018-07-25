@@ -6,7 +6,7 @@ public class StockResponse {
 
     private String companyName;
     private BigDecimal lastPrice;
-    private REASON reason;
+    private String reason;
     private CLASSIFICATION classification;
 
     public StockResponse(){}
@@ -14,7 +14,7 @@ public class StockResponse {
     public StockResponse(String companyName, BigDecimal lastPrice, REASON reason, CLASSIFICATION classification){
         this.companyName = companyName;
         this.lastPrice = lastPrice;
-        this.reason = reason;
+        this.reason = reason.getReason();
         this.classification = classification;
     }
 
@@ -47,11 +47,11 @@ public class StockResponse {
         this.lastPrice = lastPrice;
     }
 
-    public REASON getReason() {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason(REASON reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -59,6 +59,6 @@ public class StockResponse {
     public String toString(){
         return "["+ companyName +
                 ", lastPrice=" + lastPrice +
-                ", reason="+ reason.getReason() + " ]";
+                ", reason="+ reason + " ]";
     }
 }
