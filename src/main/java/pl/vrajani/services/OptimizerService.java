@@ -21,15 +21,13 @@ public class OptimizerService {
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
-            }
-
-            boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
-
-            if (isSellCandidate){
-                suggestedSells.add(stockResponse);
-            }
-            if( !isBuyCandidate && !isSellCandidate) {
-                suggestedHolds.add(stockResponse);
+            } else {
+                boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
+                if (isSellCandidate){
+                    suggestedSells.add(stockResponse);
+                } else {
+                    suggestedHolds.add(stockResponse);
+                }
             }
     }
 
