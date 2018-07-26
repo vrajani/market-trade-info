@@ -1,6 +1,5 @@
 package pl.vrajani.services.analyser;
 
-import pl.vrajani.models.REASON;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 

@@ -1,6 +1,6 @@
 package pl.vrajani.services.analyser;
 
-import pl.vrajani.models.REASON;
+import pl.vrajani.models.Reason;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 
@@ -12,17 +12,26 @@ public class BuyAnalyser extends StatsAnalyser {
     protected boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52WeekLow, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
         boolean isLowThisWeek = isGoodMonth1ChangePercent && isGoodMonth3ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
-
-        if( isCloseTo52WeekLow || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg){
+        Reason reason = identifyBuyReasoning(isCloseTo52WeekLow, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg);
+        if( reason != Reason.UNKNOWN){
             stockResponse.setClassification(StockResponse.CLASSIFICATION.BUY);
-            stockResponse.setReason(identifyBuyReasoning(isCloseTo52WeekLow, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg).getReason());
+            stockResponse.setReason(reason.getReason());
             return true;
         }
         return false;
     }
 
-    private REASON identifyBuyReasoning(boolean isCloseTo52WeekLow, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
-        return REASON.WEEK_LOW;
+    private Reason identifyBuyReasoning(boolean isCloseTo52WeekLow, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
+        if(isCloseTo52WeekLow){
+            return Reason.CLOSE_TO_52_WEEK_LOW;
+        } else if(isLowThisWeek){
+            return Reason.WEEK_LOW;
+        } else if(isLowThisMonth){
+            return Reason.LOW_MONTH;
+        } else if (isGoodDay50MovingAvg){
+            return Reason.BY_50_DAY_AVG;
+        }
+        return Reason.UNKNOWN;
     }
 
     @Override

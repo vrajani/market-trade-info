@@ -1,6 +1,6 @@
 package pl.vrajani.services;
 
-import pl.vrajani.models.REASON;
+import pl.vrajani.models.Reason;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 import pl.vrajani.services.analyser.StatsAnalyser;
@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 public class OptimizerService {
-    public void categorizeStocks(List<StatsOfInterest> statsOfInterestList, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse> suggestedHolds) {
-        statsOfInterestList.parallelStream().forEach(statsOfInterest -> {
+    public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse> suggestedHolds, Map<String, BigDecimal> currentOwnings) {
+            BigDecimal yourPrice = currentOwnings.get(statsOfInterest.getSymbol());
+            if (yourPrice == null){
+                yourPrice = BigDecimal.ZERO;
+            }
             StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
-                    REASON.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
+                    yourPrice, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
@@ -28,7 +31,6 @@ public class OptimizerService {
             if( !isBuyCandidate && !isSellCandidate) {
                 suggestedHolds.add(stockResponse);
             }
-        });
     }
 
     private boolean isBuyCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {

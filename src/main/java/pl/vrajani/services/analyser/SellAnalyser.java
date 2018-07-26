@@ -1,6 +1,6 @@
 package pl.vrajani.services.analyser;
 
-import pl.vrajani.models.REASON;
+import pl.vrajani.models.Reason;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 
@@ -14,12 +14,26 @@ public class SellAnalyser extends StatsAnalyser {
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonthAndWeek = !isGoodMonth3ChangePercent && isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
 
-        if(isCloseTo52Weekhigh || isLowThisMonthAndWeek || isLowThisMonth || isLowThisWeek || isGoodDay50MovingAvg){
+        Reason reason = identifyBuyReasoning(isCloseTo52Weekhigh, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg);
+        if( reason != Reason.UNKNOWN){
             stockResponse.setClassification(StockResponse.CLASSIFICATION.SELL);
             stockResponse.setReason(identifySellReason(isCloseTo52Weekhigh, isLowThisMonthAndWeek, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg).getReason());
             return true;
         }
         return false;
+    }
+
+    private Reason identifyBuyReasoning(boolean isCloseTo52Weekhigh, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
+        if(isCloseTo52Weekhigh){
+            return Reason.CLOSE_TO_52_WEEK_HIGH;
+        } else if(isLowThisWeek){
+            return Reason.WEEK_HIGH;
+        } else if(isLowThisMonth){
+            return Reason.HIGH_MONTH;
+        } else if (isGoodDay50MovingAvg){
+            return Reason.BY_50_DAY_AVG;
+        }
+        return Reason.UNKNOWN;
     }
 
     @Override
@@ -49,8 +63,8 @@ public class SellAnalyser extends StatsAnalyser {
         return statsOfInterest.getDay5ChangePercent().floatValue() >= 0.05;
     }
 
-    private REASON identifySellReason(boolean isCloseTo52Weekhigh, boolean isLowThisMonthAndWeek, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg){
-        return REASON.WEEK_LOW;
+    private Reason identifySellReason(boolean isCloseTo52Weekhigh, boolean isLowThisMonthAndWeek, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg){
+        return Reason.WEEK_LOW;
     }
 
 }

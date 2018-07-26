@@ -7,7 +7,9 @@ import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,23 +24,24 @@ public class DataManager {
         this.optimizerService = new OptimizerService();
     }
 
-    public Response manage(List<String> symbols) {
+    public Response manage(List<String> symbols, Map<String, BigDecimal> currentOwnings) {
         List<StockResponse> suggestedBuys = new ArrayList<>();
         List<StockResponse> suggestedSells = new ArrayList<>();
         List<StockResponse> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
-        Map<String, Float> bestDividendStocks;
 
-        List<StatsOfInterest> statsOfInterestList = new ArrayList<>();
+        Map<String, Float> bestDividendStocks = new HashMap<>();
         symbols.parallelStream()
                 .filter(Objects::nonNull)
                 .forEach(symbol -> {
-                    statsOfInterestList.add(new StatsOfInterest(requestDataService.getKeyStats(symbol),
-                    requestDataService.getLatestPrice(symbol)));
-        });
+                    StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
+                    requestDataService.getLatestPrice(symbol));
+                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwnings);
 
-        optimizerService.categorizeStocks(statsOfInterestList, suggestedBuys, suggestedSells, suggestedHolds);
-        bestDividendStocks = optimizerService.getDividendStocks(statsOfInterestList);
+                    if(statsOfInterest.getDividendYield().floatValue() > 1.75){
+                        bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());
+                    }
+                });
 
         printStockResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
         printStockResults("SELLS: "+ suggestedSells.size(), suggestedSells);

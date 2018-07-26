@@ -5,7 +5,6 @@ import pl.vrajani.controller.DataManager;
 import pl.vrajani.models.Response;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Application {
 
@@ -18,7 +17,7 @@ public class Application {
         long startTime = System.currentTimeMillis();
         Configuration configuration = new Configuration();
         DataManager manager = new DataManager(configuration.getIexTradingClient());
-        Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")));
+        Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")), configuration.getYourPrice());
         System.out.println("Completed in: "+ (System.currentTimeMillis() - startTime)/1000);
         return response;
     }
