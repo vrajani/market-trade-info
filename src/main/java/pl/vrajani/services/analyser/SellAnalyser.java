@@ -14,18 +14,20 @@ public class SellAnalyser extends StatsAnalyser {
         boolean isLowThisMonth = isGoodMonth3ChangePercent && !isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
         boolean isLowThisMonthAndWeek = !isGoodMonth3ChangePercent && isGoodMonth1ChangePercent && isGoodDay5ChangePercent;
 
-        Reason reason = identifyBuyReasoning(isCloseTo52Weekhigh, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg);
+        Reason reason = identifySellReason(isCloseTo52Weekhigh, isLowThisMonthAndWeek, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg);
         if( reason != Reason.UNKNOWN){
             stockResponse.setClassification(StockResponse.CLASSIFICATION.SELL);
-            stockResponse.setReason(identifySellReason(isCloseTo52Weekhigh, isLowThisMonthAndWeek, isLowThisMonth, isLowThisWeek, isGoodDay50MovingAvg).getReason());
+            stockResponse.setReason(reason.getReason());
             return true;
         }
         return false;
     }
 
-    private Reason identifyBuyReasoning(boolean isCloseTo52Weekhigh, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
+    private Reason identifySellReason(boolean isCloseTo52Weekhigh, boolean isLowThisMonthAndWeek, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg) {
         if(isCloseTo52Weekhigh){
             return Reason.CLOSE_TO_52_WEEK_HIGH;
+        } else if(isLowThisMonthAndWeek){
+            return Reason.WEEK_AND_MONTH_HIGH;
         } else if(isLowThisWeek){
             return Reason.WEEK_HIGH;
         } else if(isLowThisMonth){
@@ -61,10 +63,6 @@ public class SellAnalyser extends StatsAnalyser {
     @Override
     protected boolean isGoodDay5ChangePercent(StatsOfInterest statsOfInterest) {
         return statsOfInterest.getDay5ChangePercent().floatValue() >= 0.05;
-    }
-
-    private Reason identifySellReason(boolean isCloseTo52Weekhigh, boolean isLowThisMonthAndWeek, boolean isLowThisMonth, boolean isLowThisWeek, boolean isGoodDay50MovingAvg){
-        return Reason.WEEK_LOW;
     }
 
 }

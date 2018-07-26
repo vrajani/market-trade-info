@@ -8,7 +8,8 @@ public enum Reason {
     WEEK_HIGH ("High since a week ago"),
     LOW_MONTH("Low compared to last month"),
     HIGH_MONTH("High compared to last month"),
-    BY_50_DAY_AVG("By 50 Day Moving average");
+    BY_50_DAY_AVG("By 50 Day Moving average"),
+    WEEK_AND_MONTH_HIGH("High through past week and past month");
 
     String reason;
     Reason(String s) {
