@@ -11,24 +11,26 @@ import java.util.List;
 import java.util.Map;
 
 public class OptimizerService {
-    public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse> suggestedHolds, Map<String, BigDecimal> currentOwnings) {
-            BigDecimal yourPrice = currentOwnings.get(statsOfInterest.getSymbol());
-            if (yourPrice == null){
-                yourPrice = BigDecimal.ZERO;
-            }
-            StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
-                    yourPrice, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
+    public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse>
+            suggestedSells, List<StockResponse> suggestedHolds, Map<String, BigDecimal> currentOwnings) {
+
+        BigDecimal yourPrice = currentOwnings.get(statsOfInterest.getSymbol());
+        if (yourPrice == null){
+            yourPrice = BigDecimal.ZERO;
+        }
+        StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
+                yourPrice, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
+        boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
+        if (isSellCandidate){
+            suggestedSells.add(stockResponse);
+        } else {
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
             } else {
-                boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
-                if (isSellCandidate){
-                    suggestedSells.add(stockResponse);
-                } else {
-                    suggestedHolds.add(stockResponse);
-                }
+                suggestedHolds.add(stockResponse);
             }
+        }
     }
 
     private boolean isBuyCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
