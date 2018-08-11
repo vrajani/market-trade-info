@@ -31,6 +31,8 @@ public class OptimizerService {
                 suggestedHolds.add(stockResponse);
             }
         }
+
+        //add current Holding
     }
 
     private boolean isBuyCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {

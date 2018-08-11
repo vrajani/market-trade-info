@@ -13,16 +13,19 @@ public class Response {
     private List<String> earningsComingUp = new ArrayList<>();
     private Map<String, Float> bestDividendStocks = new HashMap<>();
 
+    private List<CurrentHolding> currentHoldings = new ArrayList<>();
+
     public Response(){}
 
     public Response(List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse>
-            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
+            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks, List<CurrentHolding> currentHoldings){
         this.suggestedBuys = suggestedBuys;
         this.suggestedSells = suggestedSells;
 
         this.suggestedHolds = suggestedHolds;
         extractNameFromList(earningsComingUp, this.earningsComingUp);
         this.bestDividendStocks = bestDividendStocks;
+        this.currentHoldings = currentHoldings;
     }
 
     private void extractNameFromList(List<StatsOfInterest> suggestedStats, List<String> suggestedNames) {
@@ -67,5 +70,13 @@ public class Response {
 
     public void setBestDividendStocks(Map<String, Float> bestDividendStocks) {
         this.bestDividendStocks = bestDividendStocks;
+    }
+
+    public List<CurrentHolding> getCurrentHoldings() {
+        return currentHoldings;
+    }
+
+    public void setCurrentHoldings(List<CurrentHolding> currentHoldings) {
+        this.currentHoldings = currentHoldings;
     }
 }

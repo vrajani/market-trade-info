@@ -1,0 +1,69 @@
+<html>
+<body><br><h3>Suggested Buys</h3>
+<table style="width:100%">
+    <tr>
+        <th>Company Name</th>
+        <th>Last Price</th>
+        <th>Your Price</th>
+        <th>Reason</th>
+    </tr>
+    #foreach( $suggestedBuy in $suggestedBuys )
+        <tr>
+            <td>$suggestedBuy.getCompanyName()</td>
+            <td>$suggestedBuy.getLastPrice()</td>
+            <td>$suggestedBuy.getYourPrice()</td>
+            <td>$suggestedBuy.getReason()</td>
+        </tr>
+    #end
+</table><br><br>
+<h3>Suggested Sells</h3>
+<table style="width:100%">
+    <tr>
+        <th>Company Name</th>
+        <th>Last Price</th>
+        <th>Your Price</th>
+        <th>Reason</th>
+    </tr>
+    #foreach( $suggestedSell in $suggestedSells )
+        <tr>
+            <td>$suggestedSell.getCompanyName()</td>
+            <td>$suggestedSell.getLastPrice()</td>
+            <td>$suggestedSell.getYourPrice()</td>
+            <td>$suggestedSell.getReason()</td>
+        </tr>
+    #end
+</table><br><br>
+<h3>Suggested Holds</h3>
+<table style="width:100%">
+    <tr>
+        <th>Company Name</th>
+        <th>Last Price</th>
+        <th>Your Price</th>
+        <th>Reason</th>
+    </tr>
+    #foreach( $suggestedHold in $suggestedHolds )
+        <tr>
+            <td>$suggestedHold.getCompanyName()</td>
+            <td>$suggestedHold.getLastPrice()</td>
+            <td>$suggestedHold.getYourPrice()</td>
+            <td>$suggestedHold.getReason()</td>
+        </tr>
+    #end
+</table><br><br>
+<br>
+<br>
+<h3>Suggested Holds</h3>
+<table style="width:100%">
+    <tr>
+        <th>Company Name</th>
+        <th>Dividend</th>
+    </tr>
+    #foreach( $bestDividendStock in $bestDividendStocks.entrySet() )
+        <tr>
+            <td>$bestDividendStock.getKey()</td>
+            <td>$bestDividendStock.getValue()</td>
+        </tr>
+    #end
+</table>
+</body>
+</html>

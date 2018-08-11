@@ -1,5 +1,6 @@
 package pl.vrajani.controller;
 
+import pl.vrajani.models.CurrentHolding;
 import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
@@ -29,11 +30,13 @@ public class DataManager {
         List<StockResponse> suggestedSells = new ArrayList<>();
         List<StockResponse> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
+        List<CurrentHolding> currentHoldings = new ArrayList<>();
 
         Map<String, Float> bestDividendStocks = new HashMap<>();
         symbols.parallelStream()
                 .filter(Objects::nonNull)
                 .forEach(symbol -> {
+
                     StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.getLatestPrice(symbol));
                     optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwnings);
@@ -49,7 +52,7 @@ public class DataManager {
         printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
         printMapResults("Dividend Stocks: "+ bestDividendStocks.size(), bestDividendStocks);
 
-        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocks);
+        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocks, currentHoldings);
     }
 
     private static void printMapResults(String message, Map<String, Float> results) {
