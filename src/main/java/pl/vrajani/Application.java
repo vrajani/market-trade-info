@@ -21,6 +21,6 @@ public class Application {
         Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")), configuration.getYourPrice());
         System.out.println("Completed in: "+ (System.currentTimeMillis() - startTime)/1000);
 
-        return HtmlGenerator.generateHTML(response);
+        return HtmlGenerator.generateHTML(response).replaceAll("\n","");
     }
 }

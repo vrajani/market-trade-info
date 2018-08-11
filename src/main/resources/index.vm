@@ -1,6 +1,6 @@
 <html>
-<body><br><h3>Suggested Buys</h3>
-<table style="width:100%">
+<body>
+<h3>Suggested Buys</h3><table style="width:100%" border="4">
     <tr>
         <th>Company Name</th>
         <th>Last Price</th>
@@ -15,11 +15,11 @@
             <td>$suggestedBuy.getReason()</td>
         </tr>
     #end
-</table><br><br>
+</table>
 <h3>Suggested Sells</h3>
-<table style="width:100%">
+<table style="width:100%" border="4">
     <tr>
-        <th>Company Name</th>
+<th>Company Name</th>
         <th>Last Price</th>
         <th>Your Price</th>
         <th>Reason</th>
@@ -32,9 +32,9 @@
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
-</table><br><br>
+</table>
 <h3>Suggested Holds</h3>
-<table style="width:100%">
+<table style="width:100%" border="4">
     <tr>
         <th>Company Name</th>
         <th>Last Price</th>
@@ -49,11 +49,9 @@
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end
-</table><br><br>
-<br>
-<br>
-<h3>Suggested Holds</h3>
-<table style="width:100%">
+</table>
+<h3>Dividend Stocks</h3>
+<table style="width:100%" border="4">
     <tr>
         <th>Company Name</th>
         <th>Dividend</th>
