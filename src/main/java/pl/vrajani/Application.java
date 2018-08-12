@@ -2,6 +2,7 @@ package pl.vrajani;
 
 import pl.vrajani.config.Configuration;
 import pl.vrajani.controller.DataManager;
+import pl.vrajani.models.Config;
 import pl.vrajani.models.Response;
 import pl.vrajani.services.HtmlGenerator;
 
@@ -17,10 +18,14 @@ public class Application {
     public String run() {
         long startTime = System.currentTimeMillis();
         Configuration configuration = new Configuration();
-        DataManager manager = new DataManager(configuration.getIexTradingClient());
-        Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")), configuration.getYourPrice());
-        System.out.println("Completed in: "+ (System.currentTimeMillis() - startTime)/1000);
+        Config config = configuration.loadAnalyserConfig();
+        if(config != null) {
+            DataManager manager = new DataManager(configuration.getIexTradingClient(), config);
+            Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")), configuration.readEnvPropertyToMap("CURRENT_OWNINGS"));
+            System.out.println("Completed in: " + (System.currentTimeMillis() - startTime) / 1000);
 
-        return HtmlGenerator.generateHTML(response).replaceAll("\n","");
+            return HtmlGenerator.generateHTML(response).replaceAll("\n", "");
+        }
+        return "ERROR Occured while reading config";
     }
 }

@@ -1,12 +1,20 @@
 package pl.vrajani.services.analyser;
 
+import pl.vrajani.models.BuyConfig;
 import pl.vrajani.models.Reason;
+import pl.vrajani.models.SellConfig;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 
 import java.math.RoundingMode;
 
 public class SellAnalyser extends StatsAnalyser {
+
+    private SellConfig sellConfig;
+    public SellAnalyser(SellConfig sellConfig) {
+        super();
+        this.sellConfig = sellConfig;
+    }
 
     @Override
     protected boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52Weekhigh, boolean isGoodDay5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay50MovingAvg) {
@@ -40,29 +48,29 @@ public class SellAnalyser extends StatsAnalyser {
 
     @Override
     protected boolean isCloseTo52WeekExtreme(StatsOfInterest statsOfInterest) {
-        return ((statsOfInterest.getWeek52high().subtract(statsOfInterest.getLastPrice())).divide(statsOfInterest.getLastPrice(),2, RoundingMode.HALF_UP)).floatValue() <= 0.01;
+        return ((statsOfInterest.getWeek52high().subtract(statsOfInterest.getLastPrice())).divide(statsOfInterest.getLastPrice(),2, RoundingMode.HALF_UP)).floatValue() <= sellConfig.getDiffTo52WeekHigh();
     }
 
     @Override
     protected boolean isGoodDay50MovingAvg(StatsOfInterest statsOfInterest) {
         return (statsOfInterest.getDay50MovingAvg().compareTo(statsOfInterest.getLastPrice()) < 0)
-                && ((statsOfInterest.getLastPrice().subtract(statsOfInterest.getDay50MovingAvg())).divide(statsOfInterest.getLastPrice(),2, RoundingMode.HALF_UP)).floatValue() >= 0.045;
+                && ((statsOfInterest.getLastPrice().subtract(statsOfInterest.getDay50MovingAvg())).divide(statsOfInterest.getLastPrice(),2, RoundingMode.HALF_UP)).floatValue() >= sellConfig.getDiffTo52WeekHigh();
     }
 
 
     @Override
     protected boolean isGoodmonth3ChangePercent(StatsOfInterest statsOfInterest) {
-        return statsOfInterest.getMonth3ChangePercent().floatValue() >= 0.155;
+        return statsOfInterest.getMonth3ChangePercent().floatValue() >= sellConfig.get3MonthChangeHigherThan();
     }
 
     @Override
     protected boolean isGoodMonth1ChangePercent(StatsOfInterest statsOfInterest) {
-        return statsOfInterest.getMonth1ChangePercent().floatValue() >= 0.085;
+        return statsOfInterest.getMonth1ChangePercent().floatValue() >= sellConfig.get1MonthChangeHigherThan();
     }
 
     @Override
     protected boolean isGoodDay5ChangePercent(StatsOfInterest statsOfInterest) {
-        return statsOfInterest.getDay5ChangePercent().floatValue() >= 0.05;
+        return statsOfInterest.getDay5ChangePercent().floatValue() >= sellConfig.get5DayChangeHigherThan();
     }
 
 }

@@ -1,5 +1,6 @@
 package pl.vrajani.controller;
 
+import pl.vrajani.models.Config;
 import pl.vrajani.models.CurrentHolding;
 import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
@@ -20,9 +21,9 @@ public class DataManager {
     private RequestDataService requestDataService;
     private OptimizerService optimizerService;
 
-    public DataManager(IEXTradingClient iexTradingClient){
+    public DataManager(IEXTradingClient iexTradingClient, Config config){
         this.requestDataService = new RequestDataService(iexTradingClient);
-        this.optimizerService = new OptimizerService();
+        this.optimizerService = new OptimizerService(config);
     }
 
     public Response manage(List<String> symbols, Map<String, BigDecimal> currentOwnings) {

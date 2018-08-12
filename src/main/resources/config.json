@@ -1,0 +1,16 @@
+{
+  "buyConfig" : {
+    "DiffTo52WeekLow": 0.05,
+    "Diff50DayMovingGreaterThan" : 0.045,
+    "3MonthChangeHigherThan" : 0.075,
+    "1MonthChangeHigherThan" : 0.035,
+    "5DayChangeLowerThan" : 0.005
+  },
+  "sellConfig" : {
+    "DiffTo52WeekHigh": 0.01,
+    "Diff50DayMovingGreaterThan" : 0.045,
+    "3MonthChangeHigherThan" : 0.155,
+    "1MonthChangeHigherThan" : 0.085,
+    "5DayChangeHigherThan" : 0.05
+  }
+}

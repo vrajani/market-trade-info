@@ -1,5 +1,6 @@
 package pl.vrajani.services.analyser;
 
+import pl.vrajani.models.Config;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 
@@ -16,14 +17,11 @@ public abstract class StatsAnalyser {
 
     protected abstract boolean getAnalysisResults(StockResponse stockResponse, boolean isCloseTo52WeekLow, boolean isGoodday5ChangePercent, boolean isGoodMonth1ChangePercent, boolean isGoodMonth3ChangePercent, boolean isGoodDay200MovingAvg);
 
-    private final static BuyAnalyser buyAnalyser = new BuyAnalyser();
-    private final static SellAnalyser sellAnalyser = new SellAnalyser();
-
-    public static StatsAnalyser getAnalyser(String type){
+    public static StatsAnalyser getAnalyser(String type, Config config){
         if (type.equalsIgnoreCase("buy")){
-            return buyAnalyser;
+            return new BuyAnalyser(config.getBuyConfig());
         }else if (type.equalsIgnoreCase("sell")){
-            return sellAnalyser;
+            return new SellAnalyser(config.getSellConfig());
         }
         System.out.println("Invalid Analyser Requested!!!");
         return null;

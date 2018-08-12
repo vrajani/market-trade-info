@@ -1,5 +1,6 @@
 package pl.vrajani.services;
 
+import pl.vrajani.models.Config;
 import pl.vrajani.models.Reason;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
@@ -11,6 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 public class OptimizerService {
+
+    private Config config;
+    public OptimizerService(Config config) {
+        this.config = config;
+    }
+
     public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse>
             suggestedSells, List<StockResponse> suggestedHolds, Map<String, BigDecimal> currentOwnings) {
 
@@ -36,12 +43,12 @@ public class OptimizerService {
     }
 
     private boolean isBuyCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
-        StatsAnalyser analyser = StatsAnalyser.getAnalyser("buy");
+        StatsAnalyser analyser = StatsAnalyser.getAnalyser("buy", config);
         return analyser.analyse(statsOfInterest, stockResponse);
     }
 
     private boolean isSellCandidate(StatsOfInterest statsOfInterest, StockResponse stockResponse) {
-        StatsAnalyser analyser = StatsAnalyser.getAnalyser("sell");
+        StatsAnalyser analyser = StatsAnalyser.getAnalyser("sell", config);
         return analyser.analyse(statsOfInterest, stockResponse);
     }
 
