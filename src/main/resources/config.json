@@ -1,4 +1,6 @@
 {
+  "symbolList":["AAPL","MSFT","FB","NFLX","JNJ","AMAT","TWTR","MILN","OKTA","JD","IQ","AMD","BAC","INTC","SBUX","GRPN","HMNY","CRON","DBX","F","GAMR","KMI","PFE","MU","SQ","VMW","ATVI","UA","BABA","PYPL","AMZN","GOOG","GOOGL","TSLA","AMC","T","IFN","TTM"],
+  "currentOwnings":{ "FB": 75},
   "buyConfig" : {
     "DiffTo52WeekLow": 0.05,
     "Diff50DayMovingGreaterThan" : 0.045,

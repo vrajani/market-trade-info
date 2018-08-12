@@ -1,6 +1,8 @@
 package pl.vrajani.models;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -20,6 +22,11 @@ public class Config {
     private BuyConfig buyConfig;
     @JsonProperty("sellConfig")
     private SellConfig sellConfig;
+
+    @JsonProperty("symbolList")
+    private List<String> symbolList;
+    @JsonProperty("currentOwnings")
+    private Map<String,BigDecimal> currentOwnings;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -53,4 +60,19 @@ public class Config {
         this.additionalProperties.put(name, value);
     }
 
+    public List<String> getSymbolList() {
+        return symbolList;
+    }
+
+    public void setSymbolList(List<String> symbolList) {
+        this.symbolList = symbolList;
+    }
+
+    public Map<String, BigDecimal> getCurrentOwnings() {
+        return currentOwnings;
+    }
+
+    public void setCurrentOwnings(Map<String, BigDecimal> currentOwnings) {
+        this.currentOwnings = currentOwnings;
+    }
 }

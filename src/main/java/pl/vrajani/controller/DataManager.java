@@ -20,13 +20,15 @@ public class DataManager {
 
     private RequestDataService requestDataService;
     private OptimizerService optimizerService;
+    private Config config;
 
     public DataManager(IEXTradingClient iexTradingClient, Config config){
         this.requestDataService = new RequestDataService(iexTradingClient);
         this.optimizerService = new OptimizerService(config);
+        this.config = config;
     }
 
-    public Response manage(List<String> symbols, Map<String, BigDecimal> currentOwnings) {
+    public Response manage() {
         List<StockResponse> suggestedBuys = new ArrayList<>();
         List<StockResponse> suggestedSells = new ArrayList<>();
         List<StockResponse> suggestedHolds = new ArrayList<>();
@@ -34,13 +36,13 @@ public class DataManager {
         List<CurrentHolding> currentHoldings = new ArrayList<>();
 
         Map<String, Float> bestDividendStocks = new HashMap<>();
-        symbols.parallelStream()
+        config.getSymbolList().parallelStream()
                 .filter(Objects::nonNull)
                 .forEach(symbol -> {
 
                     StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.getLatestPrice(symbol));
-                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwnings);
+                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, config.getCurrentOwnings());
 
                     if(statsOfInterest.getDividendYield().floatValue() > 1.75){
                         bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());

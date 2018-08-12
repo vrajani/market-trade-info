@@ -21,7 +21,7 @@ public class Application {
         Config config = configuration.loadAnalyserConfig();
         if(config != null) {
             DataManager manager = new DataManager(configuration.getIexTradingClient(), config);
-            Response response = manager.manage(Arrays.asList(System.getenv("COMPANY_SYMBOLS").split(",")), configuration.readEnvPropertyToMap("CURRENT_OWNINGS"));
+            Response response = manager.manage();
             System.out.println("Completed in: " + (System.currentTimeMillis() - startTime) / 1000);
 
             return HtmlGenerator.generateHTML(response).replaceAll("\n", "");
