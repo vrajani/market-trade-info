@@ -29,12 +29,14 @@ public class OptimizerService {
                 yourPrice, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
         boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
         if (isSellCandidate){
-            suggestedSells.add(stockResponse);
+            if (stockResponse.getYourPrice().compareTo(BigDecimal.ZERO) == 1){
+                suggestedSells.add(stockResponse);
+            }
         } else {
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
-            } else {
+            } else if(stockResponse.getYourPrice().compareTo(BigDecimal.ZERO) == 1){
                 suggestedHolds.add(stockResponse);
             }
         }
