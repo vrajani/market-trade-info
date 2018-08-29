@@ -9,12 +9,16 @@ import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static java.util.stream.Collectors.toMap;
 
 public class DataManager {
 
@@ -49,13 +53,34 @@ public class DataManager {
                     }
                 });
 
+        sortByGains(suggestedBuys);
+        sortByGains(suggestedSells);
+        sortByGains(suggestedHolds);
+        Map<String, Float> bestDividendStocksSorted = sortByValues(bestDividendStocks);
+
         printStockResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
         printStockResults("SELLS: "+ suggestedSells.size(), suggestedSells);
         printStockResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
         printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
-        printMapResults("Dividend Stocks: "+ bestDividendStocks.size(), bestDividendStocks);
+        printMapResults("Dividend Stocks: "+ bestDividendStocksSorted.size(), bestDividendStocksSorted);
 
-        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocks, currentHoldings);
+        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocksSorted, currentHoldings);
+    }
+
+    private Map<String, Float> sortByValues(Map<String, Float> bestDividendStocks) {
+
+        bestDividendStocks = bestDividendStocks
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+        return bestDividendStocks;
+    }
+
+    private List<StockResponse> sortByGains(List<StockResponse> stockResponses) {
+        stockResponses.sort((Comparator.comparing(StockResponse::getYourPrice).reversed()));
+        return stockResponses;
     }
 
     private static void printMapResults(String message, Map<String, Float> results) {
@@ -85,7 +110,7 @@ public class DataManager {
         if( results.size() == 0){
             System.out.println("None");
         } else {
-            results.parallelStream().filter(Objects::nonNull).forEach(result -> System.out.println(result.toString()));
+            results.stream().filter(Objects::nonNull).forEach(result -> System.out.println(result.toString()));
         }
         System.out.println("\n");
     }
