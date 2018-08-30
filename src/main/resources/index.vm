@@ -1,6 +1,25 @@
 <html>
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        td, th {
+            border: 3px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
 <body>
-<h3>Suggested Buys</h3><table style="width:120%" border="4">
+<h3>Suggested Buys</h3><table>
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
@@ -16,14 +35,14 @@
             <td>$suggestedBuy.getLastPrice()</td>
             <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
             <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>//getGainOrLoss
+            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
             <td>$suggestedBuy.getGainOrLoss()</td>
             <td>$suggestedBuy.getReason()</td>
         </tr>
     #end
 </table>
 <h3>Suggested Sells</h3>
-<table style="width:120%" border="4">
+<table>
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
@@ -46,7 +65,7 @@
     #end
 </table>
 <h3>Suggested Holds</h3>
-<table style="width:120%" border="4">
+<table>
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
@@ -69,7 +88,7 @@
     #end
 </table>
 <h3>Dividend Stocks</h3>
-<table style="width:120%" border="4">
+<table>
     <tr>
         <th>Company Name</th>
         <th>Dividend</th>
