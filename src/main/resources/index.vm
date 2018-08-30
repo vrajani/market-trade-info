@@ -1,13 +1,14 @@
 <html>
 <body>
-<h3>Suggested Buys</h3><table style="width:100%" border="4">
+<h3>Suggested Buys</h3><table style="width:120%" border="4">
     <tr>
-        <th>Company Name</th>
-        <th>Last Price</th>
-        <th>count</th>
-        <th>averagePrice</th>
-        <th>equity</th>
-        <th>Reason</th>
+        <th> Company Name </th>
+        <th> Last Price </th>
+        <th> Count </th>
+        <th> AveragePrice </th>
+        <th> Equity </th>
+        <th> Gain/Loss (USD) </th>
+        <th> Reason </th>
     </tr>
     #foreach( $suggestedBuy in $suggestedBuys )
         <tr>
@@ -15,20 +16,22 @@
             <td>$suggestedBuy.getLastPrice()</td>
             <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
             <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>//getGainOrLoss
+            <td>$suggestedBuy.getGainOrLoss()</td>
             <td>$suggestedBuy.getReason()</td>
         </tr>
     #end
 </table>
 <h3>Suggested Sells</h3>
-<table style="width:100%" border="4">
+<table style="width:120%" border="4">
     <tr>
-        <th>Company Name</th>
-        <th>Last Price</th>
-        <th>count</th>
-        <th>averagePrice</th>
-        <th>equity</th>
-        <th>Reason</th>
+        <th> Company Name </th>
+        <th> Last Price </th>
+        <th> Count </th>
+        <th> AveragePrice </th>
+        <th> Equity </th>
+        <th> Gain/Loss (USD) </th>
+        <th> Reason </th>
     </tr>
     #foreach( $suggestedSell in $suggestedSells )
         <tr>
@@ -37,19 +40,21 @@
             <td>$suggestedSell.getCurrentOwnings().getCount()</td>
             <td>$suggestedSell.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedSell.getCurrentOwnings().getEquity()</td>
+            <td>$suggestedBuy.getGainOrLoss()</td>
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
 </table>
 <h3>Suggested Holds</h3>
-<table style="width:100%" border="4">
+<table style="width:120%" border="4">
     <tr>
-        <th>Company Name</th>
-        <th>Last Price</th>
-        <th>count</th>
-        <th>averagePrice</th>
-        <th>equity</th>
-        <th>Reason</th>
+        <th> Company Name </th>
+        <th> Last Price </th>
+        <th> Count </th>
+        <th> AveragePrice </th>
+        <th> Equity </th>
+        <th> Gain/Loss (USD) </th>
+        <th> Reason </th>
     </tr>
     #foreach( $suggestedHold in $suggestedHolds )
         <tr>
@@ -58,12 +63,13 @@
             <td>$suggestedHold.getCurrentOwnings().getCount()</td>
             <td>$suggestedHold.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedHold.getCurrentOwnings().getEquity()</td>
+            <td>$suggestedBuy.getGainOrLoss()</td>
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end
 </table>
 <h3>Dividend Stocks</h3>
-<table style="width:100%" border="4">
+<table style="width:120%" border="4">
     <tr>
         <th>Company Name</th>
         <th>Dividend</th>

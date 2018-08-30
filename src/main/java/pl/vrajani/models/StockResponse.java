@@ -9,6 +9,7 @@ public class StockResponse {
     private CurrentOwnings currentOwnings;
     private String reason;
     private CLASSIFICATION classification;
+    private BigDecimal gainOrLoss;
 
     public StockResponse(){}
 
@@ -18,6 +19,11 @@ public class StockResponse {
         this.currentOwnings = currentOwnings;
         this.reason = reason.getReason();
         this.classification = classification;
+        if(currentOwnings.getAveragePrice().compareTo(BigDecimal.ZERO) > 0) {
+            this.gainOrLoss = (lastPrice.subtract(currentOwnings.getAveragePrice())).multiply(BigDecimal.valueOf(currentOwnings.getCount()));
+        } else {
+            this.gainOrLoss = BigDecimal.ZERO;
+        }
     }
 
 
@@ -35,6 +41,14 @@ public class StockResponse {
 
     public void setCurrentOwnings(CurrentOwnings currentOwnings) {
         this.currentOwnings = currentOwnings;
+    }
+
+    public BigDecimal getGainOrLoss() {
+        return gainOrLoss;
+    }
+
+    public void setGainOrLoss(BigDecimal gainOrLoss) {
+        this.gainOrLoss = gainOrLoss;
     }
 
     public enum CLASSIFICATION {
@@ -70,6 +84,7 @@ public class StockResponse {
         return "["+ companyName +
                 ", lastPrice=" + lastPrice +
                 ", currentOwnings=" + currentOwnings.toString() +
+                ", gainOrLoss="+ gainOrLoss +
                 ", reason="+ reason + " ]";
     }
 }
