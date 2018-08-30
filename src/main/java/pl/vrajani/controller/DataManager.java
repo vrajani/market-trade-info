@@ -81,7 +81,7 @@ public class DataManager {
     }
 
     private List<StockResponse> sortByGains(List<StockResponse> stockResponses) {
-        stockResponses.sort(Comparator.comparing(o -> o.getCurrentOwnings().getEquity()));
+        stockResponses.sort(Comparator.<StockResponse, BigDecimal>comparing(o -> o.getCurrentOwnings().getEquity()).reversed());
         return stockResponses;
     }
 
