@@ -34,9 +34,9 @@
         <tr>
             <td>$suggestedSell.getCompanyName()</td>
             <td>$suggestedSell.getLastPrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
+            <td>$suggestedSell.getCurrentOwnings().getCount()</td>
+            <td>$suggestedSell.getCurrentOwnings().getAveragePrice()</td>
+            <td>$suggestedSell.getCurrentOwnings().getEquity()</td>
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
@@ -55,9 +55,9 @@
         <tr>
             <td>$suggestedHold.getCompanyName()</td>
             <td>$suggestedHold.getLastPrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
-            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
+            <td>$suggestedHold.getCurrentOwnings().getCount()</td>
+            <td>$suggestedHold.getCurrentOwnings().getAveragePrice()</td>
+            <td>$suggestedHold.getCurrentOwnings().getEquity()</td>
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end
