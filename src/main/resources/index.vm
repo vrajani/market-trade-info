@@ -40,7 +40,7 @@
             <td>$suggestedSell.getCurrentOwnings().getCount()</td>
             <td>$suggestedSell.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedSell.getCurrentOwnings().getEquity()</td>
-            <td>$suggestedBuy.getGainOrLoss()</td>
+            <td>$suggestedSell.getGainOrLoss()</td>
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
@@ -63,7 +63,7 @@
             <td>$suggestedHold.getCurrentOwnings().getCount()</td>
             <td>$suggestedHold.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedHold.getCurrentOwnings().getEquity()</td>
-            <td>$suggestedBuy.getGainOrLoss()</td>
+            <td>$suggestedHold.getGainOrLoss()</td>
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end
