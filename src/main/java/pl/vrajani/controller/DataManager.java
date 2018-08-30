@@ -9,6 +9,7 @@ import pl.vrajani.services.OptimizerService;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +47,7 @@ public class DataManager {
                     StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.getLatestPrice(symbol));
                     CurrentOwnings currentOwning = config.getCurrentOwningBySymbol(symbol);
+                    currentOwning.setEquity(statsOfInterest.getLastPrice().multiply(BigDecimal.valueOf(currentOwning.getCount())));
                     optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
 
                     if(statsOfInterest.getDividendYield().floatValue() > 1.75){

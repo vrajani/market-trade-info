@@ -62,7 +62,7 @@ public class CurrentOwnings {
 
     @JsonProperty("equity")
     public void setEquity(BigDecimal equity) {
-        this.equity = averagePrice.multiply(BigDecimal.valueOf(count));
+        this.equity = equity;
     }
 
     public String getSymbol() {
