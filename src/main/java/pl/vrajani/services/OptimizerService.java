@@ -1,6 +1,7 @@
 package pl.vrajani.services;
 
 import pl.vrajani.models.Config;
+import pl.vrajani.models.CurrentOwnings;
 import pl.vrajani.models.Reason;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
@@ -19,24 +20,20 @@ public class OptimizerService {
     }
 
     public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse>
-            suggestedSells, List<StockResponse> suggestedHolds, Map<String, BigDecimal> currentOwnings) {
+            suggestedSells, List<StockResponse> suggestedHolds, CurrentOwnings currentOwning) {
 
-        BigDecimal yourPrice = currentOwnings.get(statsOfInterest.getSymbol());
-        if (yourPrice == null){
-            yourPrice = BigDecimal.ZERO;
-        }
         StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
-                yourPrice, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
+                currentOwning, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
         boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
         if (isSellCandidate){
-            if (stockResponse.getYourPrice().compareTo(BigDecimal.ZERO) == 1){
+            if (stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
                 suggestedSells.add(stockResponse);
             }
         } else {
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
-            } else if(stockResponse.getYourPrice().compareTo(BigDecimal.ZERO) == 1){
+            } else if(stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
                 suggestedHolds.add(stockResponse);
             }
         }

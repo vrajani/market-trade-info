@@ -4,14 +4,18 @@
     <tr>
         <th>Company Name</th>
         <th>Last Price</th>
-        <th>Your Price</th>
+        <th>count</th>
+        <th>averagePrice</th>
+        <th>equity</th>
         <th>Reason</th>
     </tr>
     #foreach( $suggestedBuy in $suggestedBuys )
         <tr>
             <td>$suggestedBuy.getCompanyName()</td>
             <td>$suggestedBuy.getLastPrice()</td>
-            <td>$suggestedBuy.getYourPrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
             <td>$suggestedBuy.getReason()</td>
         </tr>
     #end
@@ -19,16 +23,20 @@
 <h3>Suggested Sells</h3>
 <table style="width:100%" border="4">
     <tr>
-<th>Company Name</th>
+        <th>Company Name</th>
         <th>Last Price</th>
-        <th>Your Price</th>
+        <th>count</th>
+        <th>averagePrice</th>
+        <th>equity</th>
         <th>Reason</th>
     </tr>
     #foreach( $suggestedSell in $suggestedSells )
         <tr>
             <td>$suggestedSell.getCompanyName()</td>
             <td>$suggestedSell.getLastPrice()</td>
-            <td>$suggestedSell.getYourPrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
@@ -38,14 +46,18 @@
     <tr>
         <th>Company Name</th>
         <th>Last Price</th>
-        <th>Your Price</th>
+        <th>count</th>
+        <th>averagePrice</th>
+        <th>equity</th>
         <th>Reason</th>
     </tr>
     #foreach( $suggestedHold in $suggestedHolds )
         <tr>
             <td>$suggestedHold.getCompanyName()</td>
             <td>$suggestedHold.getLastPrice()</td>
-            <td>$suggestedHold.getYourPrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
+            <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end

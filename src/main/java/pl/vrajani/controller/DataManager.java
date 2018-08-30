@@ -1,7 +1,7 @@
 package pl.vrajani.controller;
 
 import pl.vrajani.models.Config;
-import pl.vrajani.models.CurrentHolding;
+import pl.vrajani.models.CurrentOwnings;
 import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
@@ -37,7 +37,6 @@ public class DataManager {
         List<StockResponse> suggestedSells = new ArrayList<>();
         List<StockResponse> suggestedHolds = new ArrayList<>();
         List<StatsOfInterest> earningsComingUp = new ArrayList<>();
-        List<CurrentHolding> currentHoldings = new ArrayList<>();
 
         Map<String, Float> bestDividendStocks = new HashMap<>();
         config.getSymbolList().parallelStream()
@@ -46,7 +45,8 @@ public class DataManager {
 
                     StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
                     requestDataService.getLatestPrice(symbol));
-                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, config.getCurrentOwnings());
+                    CurrentOwnings currentOwning = config.getCurrentOwningBySymbol(symbol);
+                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
 
                     if(statsOfInterest.getDividendYield().floatValue() > 1.75){
                         bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());
@@ -64,7 +64,7 @@ public class DataManager {
         printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
         printMapResults("Dividend Stocks: "+ bestDividendStocksSorted.size(), bestDividendStocksSorted);
 
-        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocksSorted, currentHoldings);
+        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocksSorted);
     }
 
     private Map<String, Float> sortByValues(Map<String, Float> bestDividendStocks) {
@@ -79,7 +79,7 @@ public class DataManager {
     }
 
     private List<StockResponse> sortByGains(List<StockResponse> stockResponses) {
-        stockResponses.sort((Comparator.comparing(StockResponse::getYourPrice).reversed()));
+        stockResponses.sort(Comparator.comparing(o -> o.getCurrentOwnings().getEquity()));
         return stockResponses;
     }
 

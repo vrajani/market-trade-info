@@ -1,6 +1,19 @@
 {
   "symbolList":["AAPL","MSFT","FB","NFLX","JNJ","AMAT","TWTR","MILN","OKTA","JD","IQ","AMD","BAC","INTC","SBUX","GRPN","HMNY","CRON","DBX","F","GAMR","KMI","PFE","MU","SQ","VMW","ATVI","UA","BABA","PYPL","AMZN","GOOG","GOOGL","TSLA","AMC","T","IFN","TTM"],
-  "currentOwnings":{ "FB": 75, "AMD":25},
+  "currentOwnings":[
+    {
+      "symbol" : "FB",
+      "count": 4,
+      "averagePrice": 75,
+      "equity": 0
+    },
+    {
+      "symbol" : "AMAT",
+      "count": 6,
+      "averagePrice": 47,
+      "equity": 0
+    }
+  ],
   "buyConfig" : {
     "DiffTo52WeekLow": 0.05,
     "Diff50DayMovingGreaterThan" : 0.045,

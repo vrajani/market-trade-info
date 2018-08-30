@@ -6,16 +6,16 @@ public class StockResponse {
 
     private String companyName;
     private BigDecimal lastPrice;
-    private BigDecimal yourPrice = BigDecimal.ZERO;
+    private CurrentOwnings currentOwnings;
     private String reason;
     private CLASSIFICATION classification;
 
     public StockResponse(){}
 
-    public StockResponse(String companyName, BigDecimal lastPrice, BigDecimal yourPrice, Reason reason, CLASSIFICATION classification){
+    public StockResponse(String companyName, BigDecimal lastPrice, CurrentOwnings currentOwnings, Reason reason, CLASSIFICATION classification){
         this.companyName = companyName;
         this.lastPrice = lastPrice;
-        this.yourPrice = yourPrice;
+        this.currentOwnings = currentOwnings;
         this.reason = reason.getReason();
         this.classification = classification;
     }
@@ -29,12 +29,12 @@ public class StockResponse {
         this.classification = classification;
     }
 
-    public BigDecimal getYourPrice() {
-        return yourPrice;
+    public CurrentOwnings getCurrentOwnings() {
+        return currentOwnings;
     }
 
-    public void setYourPrice(BigDecimal yourPrice) {
-        this.yourPrice = yourPrice;
+    public void setCurrentOwnings(CurrentOwnings currentOwnings) {
+        this.currentOwnings = currentOwnings;
     }
 
     public enum CLASSIFICATION {
@@ -69,7 +69,7 @@ public class StockResponse {
     public String toString(){
         return "["+ companyName +
                 ", lastPrice=" + lastPrice +
-                ", yourPrice=" + yourPrice +
+                ", currentOwnings=" + currentOwnings.toString() +
                 ", reason="+ reason + " ]";
     }
 }

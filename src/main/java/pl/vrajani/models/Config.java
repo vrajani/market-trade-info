@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,13 +22,16 @@ public class Config {
 
     @JsonProperty("buyConfig")
     private BuyConfig buyConfig;
+
     @JsonProperty("sellConfig")
     private SellConfig sellConfig;
 
     @JsonProperty("symbolList")
     private List<String> symbolList;
+
     @JsonProperty("currentOwnings")
-    private Map<String,BigDecimal> currentOwnings;
+    private List<CurrentOwnings> currentOwnings;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -68,11 +73,20 @@ public class Config {
         this.symbolList = symbolList;
     }
 
-    public Map<String, BigDecimal> getCurrentOwnings() {
+
+    public List<CurrentOwnings> getCurrentOwnings() {
         return currentOwnings;
     }
 
-    public void setCurrentOwnings(Map<String, BigDecimal> currentOwnings) {
+    public void setCurrentOwnings(List<CurrentOwnings> currentOwnings) {
         this.currentOwnings = currentOwnings;
+    }
+
+    public CurrentOwnings getCurrentOwningBySymbol(String symbol) {
+        List<CurrentOwnings> filteredList = currentOwnings.parallelStream().filter(currentOwning -> currentOwning.getSymbol().equalsIgnoreCase(symbol)).collect(Collectors.toList());
+        if(filteredList == null || filteredList.size() == 0){
+            return new CurrentOwnings(symbol);
+        }
+        return filteredList.get(0);
     }
 }
