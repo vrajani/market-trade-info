@@ -67,7 +67,7 @@ public class DataManager {
         sortByGains(suggestedHolds);
         Map<String, Float> bestDividendStocksSorted = sortByValues(bestDividendStocks);
 
-        BigDecimal gainOrLoss = totalCost.subtract(equity);
+        BigDecimal gainOrLoss = equity.subtract(totalCost);
         Response response = new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp,
                 bestDividendStocksSorted, totalCost, equity, gainOrLoss);
 
