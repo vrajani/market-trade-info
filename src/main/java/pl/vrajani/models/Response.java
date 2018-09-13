@@ -1,5 +1,6 @@
 package pl.vrajani.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.Map;
 
 public class Response {
 
+    private BigDecimal totalCost;
+    private BigDecimal equity;
+    private BigDecimal gainOrLoss;
     private List<StockResponse> suggestedBuys = new ArrayList<>();
     private List<StockResponse> suggestedSells = new ArrayList<>();
     private List<StockResponse> suggestedHolds = new ArrayList<>();
@@ -16,7 +20,11 @@ public class Response {
     public Response(){}
 
     public Response(List<StockResponse> suggestedBuys, List<StockResponse> suggestedSells, List<StockResponse>
-            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks){
+            suggestedHolds, List<StatsOfInterest> earningsComingUp, Map<String, Float> bestDividendStocks, BigDecimal totalCost,
+                    BigDecimal equity, BigDecimal gainOrLoss){
+        this.totalCost = totalCost;
+        this.equity = equity;
+        this.gainOrLoss = gainOrLoss;
         this.suggestedBuys = suggestedBuys;
         this.suggestedSells = suggestedSells;
 
@@ -67,5 +75,29 @@ public class Response {
 
     public void setBestDividendStocks(Map<String, Float> bestDividendStocks) {
         this.bestDividendStocks = bestDividendStocks;
+    }
+
+    public BigDecimal getEquity() {
+        return equity;
+    }
+
+    public void setEquity(BigDecimal equity) {
+        this.equity = equity;
+    }
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public BigDecimal getGainOrLoss() {
+        return gainOrLoss;
+    }
+
+    public void setGainOrLoss(BigDecimal gainOrLoss) {
+        this.gainOrLoss = gainOrLoss;
     }
 }

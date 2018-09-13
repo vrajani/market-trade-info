@@ -21,6 +21,9 @@ public class HtmlGenerator {
         Template t = velocityEngine.getTemplate("index.vm");
 
         VelocityContext context = new VelocityContext();
+        context.put("totalCost", response.getTotalCost());
+        context.put("equity", response.getEquity());
+        context.put("gainOrLoss", response.getGainOrLoss());
         context.put("suggestedBuys", response.getSuggestedBuys());
         context.put("suggestedSells", response.getSuggestedSells());
         context.put("suggestedHolds", response.getSuggestedHolds());

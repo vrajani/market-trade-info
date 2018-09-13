@@ -6,6 +6,7 @@ import pl.vrajani.models.Response;
 import pl.vrajani.models.StatsOfInterest;
 import pl.vrajani.models.StockResponse;
 import pl.vrajani.services.OptimizerService;
+import pl.vrajani.services.PrintUtil;
 import pl.vrajani.services.RequestDataService;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
 
@@ -26,6 +27,9 @@ public class DataManager {
     private RequestDataService requestDataService;
     private OptimizerService optimizerService;
     private Config config;
+
+    BigDecimal equity = BigDecimal.ZERO;
+    BigDecimal totalCost = BigDecimal.ZERO;
 
     public DataManager(IEXTradingClient iexTradingClient, Config config){
         this.requestDataService = new RequestDataService(iexTradingClient);
@@ -48,7 +52,10 @@ public class DataManager {
                     requestDataService.getLatestPrice(symbol));
                     CurrentOwnings currentOwning = config.getCurrentOwningBySymbol(symbol);
                     currentOwning.setEquity(statsOfInterest.getLastPrice().multiply(BigDecimal.valueOf(currentOwning.getCount())));
-                    optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
+                    equity = equity.add(currentOwning.getEquity());
+
+                    StockResponse stockResponse = optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
+                    totalCost = totalCost.add(currentOwning.getEquity().subtract(stockResponse.getGainOrLoss()));
 
                     if(statsOfInterest.getDividendYield().floatValue() > 1.75){
                         bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());
@@ -60,13 +67,12 @@ public class DataManager {
         sortByGains(suggestedHolds);
         Map<String, Float> bestDividendStocksSorted = sortByValues(bestDividendStocks);
 
-        printStockResults("BUYS: "+ suggestedBuys.size(), suggestedBuys);
-        printStockResults("SELLS: "+ suggestedSells.size(), suggestedSells);
-        printStockResults("HOLD: "+ suggestedHolds.size(), suggestedHolds);
-        printListResults("COMING UP EARNINGS: "+ earningsComingUp.size(), earningsComingUp);
-        printMapResults("Dividend Stocks: "+ bestDividendStocksSorted.size(), bestDividendStocksSorted);
+        BigDecimal gainOrLoss = totalCost.subtract(equity);
+        Response response = new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp,
+                bestDividendStocksSorted, totalCost, equity, gainOrLoss);
 
-        return new Response(suggestedBuys, suggestedSells, suggestedHolds, earningsComingUp, bestDividendStocksSorted);
+        PrintUtil.printResuts(response);
+        return response;
     }
 
     private Map<String, Float> sortByValues(Map<String, Float> bestDividendStocks) {
@@ -85,35 +91,4 @@ public class DataManager {
         return stockResponses;
     }
 
-    private static void printMapResults(String message, Map<String, Float> results) {
-        System.out.println("\n"+ message);
-        if( results.size() == 0){
-            System.out.println("None");
-        } else {
-            for(Map.Entry entry : results.entrySet()){
-                System.out.println(entry.toString());
-            }
-        }
-        System.out.println("\n");
-    }
-
-    private static void printListResults(String message, List<StatsOfInterest> results) {
-        System.out.println("\n"+ message);
-        if( results.size() == 0){
-            System.out.println("None");
-        } else {
-            results.parallelStream().filter(Objects::nonNull).forEach(result -> System.out.println(result.getCompanyName()));
-        }
-        System.out.println("\n");
-    }
-
-    private static void printStockResults(String message, List<StockResponse> results) {
-        System.out.println("\n"+ message);
-        if( results.size() == 0){
-            System.out.println("None");
-        } else {
-            results.stream().filter(Objects::nonNull).forEach(result -> System.out.println(result.toString()));
-        }
-        System.out.println("\n");
-    }
 }

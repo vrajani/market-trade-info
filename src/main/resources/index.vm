@@ -19,6 +19,10 @@
     </style>
 </head>
 <body>
+<h3>Total Cost : $totalCost</h3>
+<h3>Equity     : $equity</h3>
+<h3>Profit/Loss: $gainOrLoss</h3>
+<br>
 <h3>Suggested Buys</h3><table>
     <tr>
         <th> Company Name </th>

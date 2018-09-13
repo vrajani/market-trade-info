@@ -1,5 +1,6 @@
 package pl.vrajani.services;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import pl.vrajani.models.Config;
 import pl.vrajani.models.CurrentOwnings;
 import pl.vrajani.models.Reason;
@@ -19,7 +20,7 @@ public class OptimizerService {
         this.config = config;
     }
 
-    public void categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse>
+    public StockResponse categorizeStocks(StatsOfInterest statsOfInterest, List<StockResponse> suggestedBuys, List<StockResponse>
             suggestedSells, List<StockResponse> suggestedHolds, CurrentOwnings currentOwning) {
 
         StockResponse stockResponse = new StockResponse(statsOfInterest.getCompanyName(), statsOfInterest.getLastPrice(),
@@ -37,6 +38,7 @@ public class OptimizerService {
                 suggestedHolds.add(stockResponse);
             }
         }
+        return stockResponse;
 
         //add current Holding
     }
