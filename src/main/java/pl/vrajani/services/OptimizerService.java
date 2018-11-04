@@ -27,14 +27,14 @@ public class OptimizerService {
                 currentOwning, Reason.UNKNOWN, StockResponse.CLASSIFICATION.UNDECIDED);
         boolean isSellCandidate = isSellCandidate(statsOfInterest, stockResponse);
         if (isSellCandidate){
-            if (stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
+            //if (stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
                 suggestedSells.add(stockResponse);
-            }
+            //}
         } else {
             boolean isBuyCandidate = isBuyCandidate(statsOfInterest, stockResponse);
             if (isBuyCandidate){
                 suggestedBuys.add(stockResponse);
-            } else if(stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
+            } else {//if(stockResponse.getCurrentOwnings().getAveragePrice().compareTo(BigDecimal.ZERO) == 1){
                 suggestedHolds.add(stockResponse);
             }
         }

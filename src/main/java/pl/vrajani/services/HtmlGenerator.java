@@ -10,7 +10,7 @@ import java.io.StringWriter;
 
 public class HtmlGenerator {
 
-    public static String generateHTML(Response response){
+    public static String generateHTML(Response response, boolean ignoreOwnings){
 
 
         VelocityEngine velocityEngine = new VelocityEngine();
@@ -28,6 +28,7 @@ public class HtmlGenerator {
         context.put("suggestedSells", response.getSuggestedSells());
         context.put("suggestedHolds", response.getSuggestedHolds());
         context.put("bestDividendStocks", response.getBestDividendStocks());
+        context.put("ignoreOwnings", ignoreOwnings);
 
         StringWriter writer = new StringWriter();
         t.merge( context, writer );

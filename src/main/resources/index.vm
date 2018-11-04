@@ -13,34 +13,59 @@
             padding: 8px;
         }
 
+        th {
+            cursor: pointer;
+        }
+
         tr:nth-child(even) {
             background-color: #dddddd;
         }
     </style>
+    <script>
+    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+    const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+        v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+        )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+    // do the work...
+    document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+        const table = th.closest('table');
+        Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+            .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            .forEach(tr => table.appendChild(tr) );
+    })));
+    </script>
 </head>
 <body>
+        #if( !$ignoreOwnings )
 <h3>Total Cost : $totalCost</h3>
 <h3>Equity     : $equity</h3>
 <h3>Profit/Loss: $gainOrLoss</h3>
+#end
 <br>
 <h3>Suggested Buys</h3><table>
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
+        #if( !$ignoreOwnings )
         <th> Count </th>
         <th> AveragePrice </th>
         <th> Equity </th>
         <th> Gain/Loss (USD) </th>
+        #end
         <th> Reason </th>
     </tr>
     #foreach( $suggestedBuy in $suggestedBuys )
         <tr>
             <td>$suggestedBuy.getCompanyName()</td>
             <td>$suggestedBuy.getLastPrice()</td>
+            #if( !$ignoreOwnings )
             <td>$suggestedBuy.getCurrentOwnings().getCount()</td>
             <td>$suggestedBuy.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedBuy.getCurrentOwnings().getEquity()</td>
             <td>$suggestedBuy.getGainOrLoss()</td>
+            #end
             <td>$suggestedBuy.getReason()</td>
         </tr>
     #end
@@ -50,20 +75,24 @@
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
+        #if( !$ignoreOwnings )
         <th> Count </th>
         <th> AveragePrice </th>
         <th> Equity </th>
         <th> Gain/Loss (USD) </th>
+        #end
         <th> Reason </th>
     </tr>
     #foreach( $suggestedSell in $suggestedSells )
         <tr>
             <td>$suggestedSell.getCompanyName()</td>
             <td>$suggestedSell.getLastPrice()</td>
+            #if( !$ignoreOwnings )
             <td>$suggestedSell.getCurrentOwnings().getCount()</td>
             <td>$suggestedSell.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedSell.getCurrentOwnings().getEquity()</td>
             <td>$suggestedSell.getGainOrLoss()</td>
+            #end
             <td>$suggestedSell.getReason()</td>
         </tr>
     #end
@@ -73,20 +102,24 @@
     <tr>
         <th> Company Name </th>
         <th> Last Price </th>
+        #if( !$ignoreOwnings )
         <th> Count </th>
         <th> AveragePrice </th>
         <th> Equity </th>
         <th> Gain/Loss (USD) </th>
+        #end
         <th> Reason </th>
     </tr>
     #foreach( $suggestedHold in $suggestedHolds )
         <tr>
             <td>$suggestedHold.getCompanyName()</td>
             <td>$suggestedHold.getLastPrice()</td>
+            #if( !$ignoreOwnings )
             <td>$suggestedHold.getCurrentOwnings().getCount()</td>
             <td>$suggestedHold.getCurrentOwnings().getAveragePrice()</td>
             <td>$suggestedHold.getCurrentOwnings().getEquity()</td>
             <td>$suggestedHold.getGainOrLoss()</td>
+            #end
             <td>$suggestedHold.getReason()</td>
         </tr>
     #end

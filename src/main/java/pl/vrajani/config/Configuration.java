@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,10 +49,15 @@ public class Configuration {
                 S3Object object = s3.getObject("market-trade-info", "config.json");
                 is = object.getObjectContent();
             }
-            ObjectMapper objectMapper = new ObjectMapper();
 
             //convert json string to object
-            return objectMapper.readValue(is, Config.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Config config = objectMapper.readValue(is, Config.class);
+
+            if(System.getenv("processOwnings") != null && System.getenv("processOwnings").equalsIgnoreCase("false")){
+                config.setCurrentOwnings(new ArrayList<>());
+            }
+            return config;
         } catch (IOException e) {
             e.printStackTrace();
         }
