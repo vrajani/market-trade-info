@@ -48,17 +48,21 @@ public class DataManager {
                 .filter(Objects::nonNull)
                 .forEach(symbol -> {
 
-                    StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
-                    requestDataService.getLatestPrice(symbol));
-                    CurrentOwnings currentOwning = config.getCurrentOwningBySymbol(symbol);
-                    currentOwning.setEquity(statsOfInterest.getLastPrice().multiply(BigDecimal.valueOf(currentOwning.getCount())));
-                    equity = equity.add(currentOwning.getEquity());
+                    try {
+                        StatsOfInterest statsOfInterest = new StatsOfInterest(requestDataService.getKeyStats(symbol),
+                                requestDataService.getLatestPrice(symbol));
+                        CurrentOwnings currentOwning = config.getCurrentOwningBySymbol(symbol);
+                        currentOwning.setEquity(statsOfInterest.getLastPrice().multiply(BigDecimal.valueOf(currentOwning.getCount())));
+                        equity = equity.add(currentOwning.getEquity());
 
-                    StockResponse stockResponse = optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
-                    totalCost = totalCost.add(currentOwning.getEquity().subtract(stockResponse.getGainOrLoss()));
+                        StockResponse stockResponse = optimizerService.categorizeStocks(statsOfInterest, suggestedBuys, suggestedSells, suggestedHolds, currentOwning);
+                        totalCost = totalCost.add(currentOwning.getEquity().subtract(stockResponse.getGainOrLoss()));
 
-                    if(statsOfInterest.getDividendYield().floatValue() > 1.75){
-                        bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());
+                        if(statsOfInterest.getDividendYield().floatValue() > 1.75){
+                            bestDividendStocks.put(statsOfInterest.getCompanyName(), statsOfInterest.getDividendYield().floatValue());
+                        }
+                    } catch (Exception exception){
+                        System.out.println("Error with stock - "+ symbol + " error message - " + exception.getMessage());
                     }
                 });
 

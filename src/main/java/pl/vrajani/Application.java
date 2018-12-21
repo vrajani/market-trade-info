@@ -54,8 +54,6 @@ public class Application implements RequestStreamHandler {
             headerJson.put("content-type", "text/html");
             responseJson.put("headers", headerJson);
 
-
-
             long startTime = System.currentTimeMillis();
             Configuration configuration = new Configuration();
             Config config = configuration.loadAnalyserConfig();
